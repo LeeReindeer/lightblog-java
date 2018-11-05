@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.leer.lightblogjava.dao.BlogDao">
+
+    <resultMap id="blogMap" type="Blog">
+        <id property="blogId" column="blog_id"/>
+        <result property="blogUid" column="blog_uid"/>
+        <result property="blogTagId" column="blog_tag_id"/>
+        <result property="blogContent" column="blog_content"/>
+        <result property="blogTime" column="blog_time" javaType="Date" jdbcType="DATE"/>
+        <result property="blogLike" column="blog_like"/>
+        <result property="blogUnLike" column="blog_unlike"/>
+        <result property="blogComment" column="blog_comment"/>
+    </resultMap>
+
+    <resultMap id="lightBlogMap" type="LightBlog">
+        <id property="id" column="blog_id"/>
+        <result property="userName" column="blog_user_name"/>
+        <result property="userAvatar" column="blog_user_avatar"/>
+        <association property="blog" column="blog_id" resultMap="blogMap"/>
+    </resultMap>
+
+    <select id="getTimelineByUIDWithPaging" resultMap="lightBlogMap">
+        SELECT *
+        FROM blogdetail
+        WHERE blog_uid IN
+              (SELECT user_to FROM fan_follow WHERE user_from = #{uid})
+           OR blog_uid = #{uid}
+        ORDER BY blog_time DESC
+        LIMIT 20 OFFSET #{page}
+    </select>
+
+    <select id="getTimelineCnt" resultType="Long">
+        SELECT count(*)
+        FROM blogdetail
+        WHERE blog_uid IN (SELECT user_to FROM fan_follow WHERE user_from = #{uid})
+           OR blog_uid = #{uid};
+    </select>
+
+    <select id="getBlogDetail" resultMap="lightBlogMap">
+        SELECT *
+        FROM blogdetail
+        WHERE blog_id = #{blogId};
+    </select>
+
+    <select id="getBlogById" resultMap="blogMap">
+        SELECT *
+        FROM blog
+        WHERE blog_id = #{id};
+    </select>
+
+    <select id="getBlogsByUID" resultMap="lightBlogMap">
+        SELECT *
+        FROM blogdetail
+        WHERE blog_uid = #{uid}
+        ORDER BY blog_time DESC
+    </select>
+
+    <select id="isUserLikedBlog" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND user_id = #{uid}
+          AND count_type = 0;
+    </select>
+
+    <select id="isUserDislikeBlog" resultType="Int">
+        SELECT count(*)
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND user_id = #{uid}
+          AND count_type = 1;
+    </select>
+
+    <select id="getBlogLike" resultType="Int">
+        SELECT blog_like
+        FROM blog
+        WHERE blog_id = #{blogId};
+    </select>
+
+    <select id="getBlogUnlike" resultType="Int">
+        SELECT blog_unlike
+        FROM blog
+        WHERE blog_id = #{blogId};
+    </select>
+
+    <insert id="saveBlog" parameterType="Blog">
+        INSERT INTO blog (blog_uid, blog_tag_id, blog_content, blog_time, blog_like, blog_unlike, blog_comment)
+        VALUES (#{blogUid}, #{blogTagId}, #{blogContent}, #{blogTime}, #{blogLike}, #{blogUnlike}, #{blogComment})
+    </insert>
+
+    <update id="updateBlog" parameterType="Blog">
+        UPDATE blog
+        SET blog_content = #{blogContent},
+            blog_time    = #{blogTime}
+        WHERE blog_id = #{blogId}
+    </update>
+
+    <update id="incLikeBlog">
+        UPDATE blog
+        SET blog_like = blog_like + 1
+        WHERE blog_id = #{blogId};
+        INSERT INTO blog_counter
+        VALUES (#{blogId}, #{uid}, 0);
+    </update>
+
+    <!--check blog like cnt > 0 in java code-->
+    <update id="decLikeBlog">
+        UPDATE blog
+        SET blog_like = blog_like + 1
+        WHERE blog_id = #{blogId};
+        DELETE
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND user_id = #{blogId}
+          AND count_type = 0;
+    </update>
+
+    <update id="incDislikeBlog">
+        UPDATE blog
+        SET blog_unlike = blog_unlike + 1
+        WHERE blog_id = #{blogId};
+        INSERT INTO blog_counter
+        VALUES (#{blogId}, #{uid}, 1);
+    </update>
+
+    <!--check blog unlike cnt > 0 in java code-->
+    <update id="decDislikeBlog">
+        UPDATE blog
+        SET blog_unlike = blog_unlike - 1
+        WHERE blog_id = #{blogId};
+        DELETE
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND user_id = #{blogId}
+          AND count_type = 1;
+    </update>
+    <update id="incBlogComment">
+        UPDATE blog
+        SET blog_comment = blog_comment + 1
+        WHERE blog_id = #{blogId};
+    </update>
+
+    <update id="decBlogComment">
+        UPDATE blog
+        SET blog_comment = blog_comment - 1
+        WHERE blog_id = #{blogId};
+    </update>
+
+    <delete id="deleteBlog">
+        DELETE
+        FROM blog
+        where blog_id = #{blogId};
+    </delete>
+
+</mapper>

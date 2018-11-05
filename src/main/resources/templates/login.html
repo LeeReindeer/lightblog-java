@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS-->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.css}">
+    <title>Login</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-4 mt-5">
+            <form class="align-self-center" action="" method="post">
+                <div class="form-group">
+                    <label for="usernameInput">用户名：</label>
+                    <input class="form-control" type="text" name="username" id="usernameInput" placeholder="用户名"
+                           required>
+                    <div class="invalid-feedback"></div>
+
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.flash_waring} ne null">
+                        <strong th:text="${param.flash_waring}"></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">密码：</label>
+                    <input class="form-control" type="password" name="password" id="passwordInput" placeholder="密码"
+                           required>
+
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.flash_error} ne null">
+                        <strong th:text="${param.flash_error}"></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" th:if="${register} eq true">
+                    <label for="passAgain">确认密码：</label>
+                    <input class="form-control" type="password" name="passwordAgain" id="passAgain" placeholder="确认密码">
+                </div>
+
+                <div class="form-group" th:if="${login} eq true">
+                    <input class="btn btn-primary" type="submit" placeholder="登录" value="登录">
+                    <a class="btn btn-primary" href="/register">注册新帐号</a>
+                </div>
+
+                <div class="form-group" th:if="${register} eq true">
+                    <input class="btn btn-primary" type="submit" placeholder="注册" value="注册">
+                    <a class="btn btn-info" href="/login">登录已有帐号</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--jquery-->
+<script src="../static/js/jquery.js" th:src="@{/js/jquery.js}"></script>
+<script src="../static/js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.leer.lightblogjava.dao.CommentDao">
+    <resultMap id="commMap" type="Comment">
+        <id property="commId" column="comm_id" jdbcType="BIGINT"/>
+        <result property="commBlogId" column="comm_blog_id"/>
+        <result property="commFromUid" column="comm_from_uid"/>
+        <result property="commToUid" column="comm_to_uid"/>
+        <result property="commContent" column="comm_content"/>
+        <result property="commTime" column="comm_time" javaType="Date" jdbcType="DATE"/>
+        <result property="commLike" column="comm_like"/>
+        <result property="commFromName" column="comm_from_name"/>
+        <result property="commFromAvatar" column="comm_from_avatar"/>
+        <result property="commToName" column="comm_to_name"/>
+        <result property="commToAvatar" column="comm_to_avatar"/>
+    </resultMap>
+
+    <insert id="saveComment" parameterType="Comment">
+        INSERT INTO comment (comm_blog_id,
+                             comm_from_uid,
+                             comm_to_uid,
+                             comm_content,
+                             comm_time,
+                             comm_like,
+                             comm_from_name,
+                             comm_from_avatar,
+                             comm_to_name,
+                             comm_to_avatar)
+        VALUES (#{commBlogId},
+                #{commFromUid},
+                #{commToUid},
+                #{commContent},
+                #{commTime},
+                #{commLike},
+                (SELECT user.user_name FROM user WHERE user.user_id = #{commFromUid}),
+                (SELECT user.user_avatar FROM user WHERE user.user_id = #{commFromUid}),
+                (SELECT user.user_name FROM user WHERE user.user_id = #{commToUid}),
+                (SELECT user.user_avatar FROM user WHERE user.user_id = #{commToUid}));
+    </insert>
+
+    <update id="likeComment" parameterType="Long">
+        UPDATE comment
+        SET comm_like = comm_like + 1
+        WHERE comm_id = #{commId}
+    </update>
+
+    <delete id="deleteComment" parameterType="Long">
+        DELETE
+        FROM comment
+        WHERE comm_id = #{commId};
+    </delete>
+
+    <select id="getAllByBlogId" parameterType="Long" resultMap="commMap">
+        SELECT *
+        FROM comment
+        WHERE comm_blog_id = #{blogId};
+    </select>
+
+    <select id="getCommentById" resultMap="commMap" parameterType="Long">
+        SELECT *
+        FROM comment
+        WHERE comm_id = #{commId};
+    </select>
+</mapper>

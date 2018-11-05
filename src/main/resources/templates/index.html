@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
+<head th:include="layout :: htmlhead">
+</head>
+
+<nav th:replace="layout :: header">
+</nav>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 align-items-center align-self-center">
+                <!--new blog-->
+                <form class="form-group blog-form" method="post" action="/">
+                    <div class="form-group row">
+                        <textarea class="form-control" name="content" rows="5" placeholder="欲言又止"></textarea>
+                    </div>
+                    <div class="form-group row float-right">
+                        <input type="submit" class="btn btn-primary" value="Light"/>
+                    </div>
+                </form>
+
+                <ul class="list-group blog-content" th:each="blog : ${blogs}">
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <a href="/user/LeeR" th:href="@{'/user/' + ${blog.userName}}">
+                                    <img src="{{.BlogUserAvatar}}" th:src="${blog.userAvatar}" class="blog-avatar"/>
+                                </a>
+                                <a href="/user/{{.BlogUsername}}" th:href="@{'/user/' + ${blog.userName}}" th:text="'&nbsp;' + ${blog.userName}"></a>
+                            </div>
+                            <div class="col-lg-10">
+                                <br>
+                                <!--fixme empty-->
+                                <p class="text-left" th:text="${blog.blogPreview}">
+                                    <a href="/tag/{{.BlogTagId}}" th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}" class="badge-pill badge-primary"
+                                       th:text="${blog.tagName}" th:if="${not ${blog.blog.getBlogTagId()}} ne 0">
+                                    </a>&nbsp;
+                                </p>
+                                <div class="float-right ml-2 mr-2">
+                                <span>
+                                    <a href="#" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
+                                    <a href="/blog/{{.BlogId}}" th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
+                                    <span>
+                                    <a href="/blog/like?id={{.BlogId}}&redirect={{$.redirect}}" th:href="@{/blog/like(id=${blog.id})}">
+                                        <i class="fa fa-thumbs-up"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogLike}"></span>
+                                    </a> |
+                                    <a href="/blog/dislike?id={{.BlogId}}&redirect={{$.redirect}}" th:href="@{/blog/dislike(id=${blog.id})}">
+                                        <i class="fa fa-thumbs-down"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogUnLike}"></span>
+                                    </a> |
+                                    <a href="#">
+                                        <i class="fa fa-comments"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogComment}"></span>
+                                    </a>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <nav class="mt-1">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

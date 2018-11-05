@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.leer.lightblogjava.dao.UserDao">
+
+    <resultMap id="userMap" type="User">
+        <id property="userId" column="user_id" javaType="Long"/>
+        <result property="userName" column="user_name"/>
+        <result property="userAvatar" column="user_avatar"/>
+        <result property="password" column="user_password"/>
+        <result property="userRegister" column="user_register" javaType="Date"/>
+        <result property="userBio" column="user_bio"/>
+        <result property="userFollowers" column="user_followers"/>
+        <result property="userFollowing" column="user_following"/>
+    </resultMap>
+
+    <resultMap id="userWithBlogsMap" type="User">
+        <id property="userId" column="user_id" javaType="Long"/>
+        <result property="userName" column="user_name"/>
+        <result property="userAvatar" column="user_avatar"/>
+        <result property="password" column="user_password"/>
+        <result property="userRegister" column="user_register" javaType="Date"/>
+        <result property="userBio" column="user_bio"/>
+        <result property="userFollowers" column="user_followers"/>
+        <result property="userFollowing" column="user_following"/>
+        <collection property="myBlogs" column="user_id"
+                    ofType="LightBlog"
+                    select="moe.leer.lightblogjava.dao.BlogDao.getBlogsByUID"
+                    fetchType="eager">
+            <id property="id" column="blog_id"/>
+            <result property="userName" column="blog_user_name"/>
+            <result property="userAvatar" column="blog_user_avatar"/>
+            <association property="blog" column="blog_id" resultMap="moe.leer.lightblogjava.dao.BlogDao.blogMap"/>
+        </collection>
+    </resultMap>
+
+    <insert id="saveUser" parameterType="User">
+        INSERT INTO user (user_name,
+                          user_avatar,
+                          user_password,
+                          user_register,
+                          user_bio,
+                          user_followers,
+                          user_following)
+        VALUES (#{userName},
+                #{userAvatar},
+                #{password},
+                #{userRegister},
+                #{userBio},
+                #{userFollowers},
+                #{userFollowing})
+    </insert>
+
+    <update id="followUser">
+        INSERT INTO fan_follow
+        VALUES (#{fromId}, #{toId});
+        UPDATE user
+        SET user_followers = user_followers + 1
+        WHERE user_id = #{toId};
+        UPDATE user
+        SET user_following = user_following + 1
+        WHERE user_id = #{fromId};
+    </update>
+
+    <update id="unFollowUser">
+        DELETE
+        FROM fan_follow
+        WHERE user_from = #{fromId}
+          AND user_to = #{toId};
+        UPDATE user
+        SET user_followers = user_followers - 1
+        WHERE user_id = #{toId};
+        UPDATE user
+        SET user_following = user_following - 1
+        WHERE user_id = #{fromId};
+    </update>
+
+    <select id="getUserByName" parameterType="String" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_name = #{name};
+    </select>
+
+    <select id="getUserById" parameterType="Long" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_id = #{id};
+    </select>
+
+    <select id="getPasswordHashByName" parameterType="String" resultType="String">
+        SELECT user_password
+        FROM user
+        WHERE user_id = #{name};
+    </select>
+
+    <select id="getUserProfile" parameterType="Long" resultMap="userWithBlogsMap">
+        SELECT *
+        FROM user
+        WHERE user_id = #{id};
+    </select>
+</mapper>

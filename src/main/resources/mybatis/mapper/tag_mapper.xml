@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="moe.leer.lightblogjava.dao.TagDao">
+    <resultMap id="tagMap" type="Tag">
+        <id property="tagId" column="tag_id" javaType="Long" jdbcType="BIGINT"/>
+        <result property="tagName" column="tag_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="tagTime" column="tag_time" javaType="java.util.Date" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getTagById" parameterType="Long" resultMap="tagMap">
+        SELECT *
+        FROM tag
+        WHERE tag_id = #{tagId};
+    </select>
+
+    <select id="getTagName" resultType="String">
+        SELECT tag_name
+        FROM tag
+        WHERE tag_id = #{tagId}
+    </select>
+
+    <insert id="saveTag" parameterType="Tag" useGeneratedKeys="true"
+            keyProperty="tag_id">
+        INSERT INTO tag (tag_name, tag_time)
+        VALUES (#{tagName}, #{tagTime})
+    </insert>
+</mapper>
