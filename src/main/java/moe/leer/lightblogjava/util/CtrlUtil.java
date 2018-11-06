@@ -1,12 +1,5 @@
 package moe.leer.lightblogjava.util;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import moe.leer.lightblogjava.LightBlogApplication;
-import moe.leer.lightblogjava.service.AuthenticationService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
