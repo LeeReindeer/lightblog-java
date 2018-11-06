@@ -1,8 +1,11 @@
 package moe.leer.lightblogjava.controller;
 
+import moe.leer.lightblogjava.App;
+import moe.leer.lightblogjava.base.BaseController;
 import moe.leer.lightblogjava.dao.UserDaoWrapper;
 import moe.leer.lightblogjava.modle.User;
 import moe.leer.lightblogjava.service.AuthenticationService;
+import moe.leer.lightblogjava.util.$;
 import moe.leer.lightblogjava.util.CipherUtil;
 import moe.leer.lightblogjava.util.CookieUtil;
 import moe.leer.lightblogjava.util.CtrlUtil;
@@ -25,7 +28,7 @@ import java.util.Date;
  * Handle user login/register and profile page
  */
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -39,14 +42,14 @@ public class UserController {
   String getRegister(HttpServletRequest request, HttpServletResponse response, Model model) {
     model.addAttribute("register", true);
     model.addAttribute("login", false);
-    return "login";
+    return App.TEMPLATE_LOGIN;
   }
 
   @PostMapping("/register")
   String postRegister(HttpServletRequest request, HttpServletResponse response,
                       String username, String password, String passwordAgain, RedirectAttributes flash) {
     // check params
-    if (!username.isEmpty()) {
+    if ($.StringNotNullAndEmpty(username)) {
       User exitUser = userDao.getUserByName(username);
       if (exitUser != null) {
         CtrlUtil.flashWaring(flash, "用户名已存在");
@@ -61,8 +64,7 @@ public class UserController {
     }
 
     // save to db
-    String hash = CipherUtil.getPasswordHash(password);
-    User user = new User(username, User.DEFAULT_AVATAR, password, new Date());
+    User user = new User(username, User.DEFAULT_AVATAR, CipherUtil.getPasswordHash(password), new Date());
     userDao.saveUser(user);
 
     CtrlUtil.flashWaring(flash, "注册成功，可以登录了");
@@ -72,16 +74,18 @@ public class UserController {
   @GetMapping("/login")
   String getLogin(HttpServletRequest request, HttpServletResponse response,
                   Model model) {
-    //todo redirect to home if already login
+    if (authService.isLogin(request)) {
+      return CtrlUtil.redirectTo("/");
+    }
     model.addAttribute("register", false);
     model.addAttribute("login", true);
-    return "login";
+    return App.TEMPLATE_LOGIN;
   }
 
   @PostMapping("/login")
   String postLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
                    String username, String password /*boolean rememberMe*/) {
-    if (password == null || password.isEmpty() || username == null || username.isEmpty()) {
+    if ($.StringNullOrEmpty(password)|| $.StringNullOrEmpty(username)) {
       return CtrlUtil.redirectTo("/login");
     }
     logger.info("username: {}", username);

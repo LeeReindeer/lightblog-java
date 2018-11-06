@@ -1,5 +1,6 @@
 package moe.leer.lightblogjava.controller;
 
+import moe.leer.lightblogjava.App;
 import moe.leer.lightblogjava.base.BaseController;
 import moe.leer.lightblogjava.dao.BlogDaoWrapper;
 import moe.leer.lightblogjava.modle.User;
@@ -21,13 +22,13 @@ public class HomeController extends BaseController {
   @Autowired
   private BlogDaoWrapper blogDao;
 
-  @GetMapping({"/", "/home", "/index"})
+  @GetMapping({"/"})
   public String timeline(HttpServletRequest request, HttpServletResponse response,
                          Model model) {
     User user = getCurrentUser(request);
     model.addAttribute("username", user.getUserName());
     model.addAttribute("blogs", blogDao.getTimeline(user.getUserId()));
     model.addAttribute("redirect", "/");
-    return "index";
+    return App.TEMPLATE_HOME;
   }
 }
