@@ -7,7 +7,7 @@
         <result property="blogUid" column="blog_uid"/>
         <result property="blogTagId" column="blog_tag_id"/>
         <result property="blogContent" column="blog_content"/>
-        <result property="blogTime" column="blog_time" javaType="Date" jdbcType="DATE"/>
+        <result property="blogTime" column="blog_time" javaType="Date"/>
         <result property="blogLike" column="blog_like"/>
         <result property="blogUnLike" column="blog_unlike"/>
         <result property="blogComment" column="blog_comment"/>
