@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import moe.leer.lightblogjava.dao.UserDaoWrapper;
@@ -50,7 +51,13 @@ public class AuthenticationService {
     if (token == null) {
       return null;
     } else {
-      Claim claim = JWT.decode(token).getClaim("uid");
+      Claim claim = null;
+      try {
+        claim = JWT.decode(token).getClaim("uid");
+      } catch (JWTDecodeException ignore) {
+        logger.error("bad token: {}", token);
+        return null;
+      }
       uid = claim.asLong();
       if (uid == null) {
         logger.error("user not find, please relogin");
