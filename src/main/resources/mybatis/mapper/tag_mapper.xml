@@ -13,14 +13,19 @@
         WHERE tag_id = #{tagId};
     </select>
 
+    <select id="getTagByName" parameterType="String" resultMap="tagMap">
+        SELECT *
+        FROM tag
+        WHERE tag_name = #{tagName};
+    </select>
+
     <select id="getTagName" resultType="String">
         SELECT tag_name
         FROM tag
         WHERE tag_id = #{tagId}
     </select>
 
-    <insert id="saveTag" parameterType="Tag" useGeneratedKeys="true"
-            keyProperty="tag_id">
+    <insert id="saveTag" parameterType="Tag" useGeneratedKeys="true" keyProperty="tagId">
         INSERT INTO tag (tag_name, tag_time)
         VALUES (#{tagName}, #{tagTime})
     </insert>

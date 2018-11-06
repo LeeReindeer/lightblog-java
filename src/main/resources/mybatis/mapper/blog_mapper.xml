@@ -84,9 +84,9 @@
         WHERE blog_id = #{blogId};
     </select>
 
-    <insert id="saveBlog" parameterType="Blog">
+    <insert id="saveBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="blogId">
         INSERT INTO blog (blog_uid, blog_tag_id, blog_content, blog_time, blog_like, blog_unlike, blog_comment)
-        VALUES (#{blogUid}, #{blogTagId}, #{blogContent}, #{blogTime}, #{blogLike}, #{blogUnlike}, #{blogComment})
+        VALUES (#{blogUid}, #{blogTagId}, #{blogContent}, #{blogTime}, #{blogLike}, #{blogUnLike}, #{blogComment})
     </insert>
 
     <update id="updateBlog" parameterType="Blog">
