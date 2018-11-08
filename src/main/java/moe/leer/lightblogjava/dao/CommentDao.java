@@ -15,7 +15,6 @@ public interface CommentDao {
 
   Comment getCommentById(Long commId);
 
-  // todo return bool?
   void saveComment(Comment comment);
 
   void deleteComment(Long commId);

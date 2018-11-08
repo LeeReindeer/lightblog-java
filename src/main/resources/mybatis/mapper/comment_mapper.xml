@@ -7,7 +7,7 @@
         <result property="commFromUid" column="comm_from_uid"/>
         <result property="commToUid" column="comm_to_uid"/>
         <result property="commContent" column="comm_content"/>
-        <result property="commTime" column="comm_time" javaType="Date" jdbcType="DATE"/>
+        <result property="commTime" column="comm_time" javaType="Date"/>
         <result property="commLike" column="comm_like"/>
         <result property="commFromName" column="comm_from_name"/>
         <result property="commFromAvatar" column="comm_from_avatar"/>

@@ -1,5 +1,7 @@
 package moe.leer.lightblogjava.model;
 
+import moe.leer.lightblogjava.util.$;
+
 import java.util.Date;
 
 /**
@@ -21,6 +23,8 @@ public class Comment {
   private String commFromAvatar;
   private String commToName;
   private String commToAvatar;
+
+  private String timeString;
 
   public Comment() {
   }
@@ -92,6 +96,11 @@ public class Comment {
 
   public void setCommToAvatar(String commToAvatar) {
     this.commToAvatar = commToAvatar;
+  }
+
+  public String getTimeString() {
+    timeString = $.formatTime(commTime);
+    return timeString;
   }
 
   @Override
