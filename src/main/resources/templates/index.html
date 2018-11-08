@@ -33,21 +33,24 @@
                             <div class="col-lg-10">
                                 <br>
                                 <!--fixme empty-->
-                                <p class="text-left" th:text="${blog.blogPreview}">
-                                    <a href="/tag/{{.BlogTagId}}" th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}" class="badge-pill badge-primary"
-                                       th:text="${blog.tagName}" th:if="${not ${blog.blog.getBlogTagId()}} ne 0">
-                                    </a>&nbsp;
-                                </p>
+                                <!--<a href="/tag/{{.BlogTagId}}" th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"-->
+                                   <!--class="badge-pill badge-primary" th:text="'#' + ${blog.tagName}" th:if="${blog.tagName} ne null">-->
+                                <!--</a>&nbsp;-->
+                                <div>
+                                    <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}" th:if="${blog.tagName} ne null"
+                                       th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>
+                                    <span th:text="${blog.blogPreview}" class="text-left"></span>
+                                </div>
                                 <div class="float-right ml-2 mr-2">
                                 <span>
                                     <a href="#" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
                                     <a href="/blog/{{.BlogId}}" th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
                                     <span>
-                                    <a href="/blog/like?id={{.BlogId}}&redirect={{$.redirect}}" th:href="@{/blog/like(id=${blog.id})}">
+                                    <a href="#" th:href="@{'/blog/like/' + ${blog.id}(redirect=${redirect})}">
                                         <i class="fa fa-thumbs-up"></i>
                                         <span th:text="'&nbsp;' + ${blog.blog.blogLike}"></span>
                                     </a> |
-                                    <a href="/blog/dislike?id={{.BlogId}}&redirect={{$.redirect}}" th:href="@{/blog/dislike(id=${blog.id})}">
+                                    <a href="#" th:href="@{'/blog/dislike/' + ${blog.id}(redirect=${redirect})}">
                                         <i class="fa fa-thumbs-down"></i>
                                         <span th:text="'&nbsp;' + ${blog.blog.blogUnLike}"></span>
                                     </a> |

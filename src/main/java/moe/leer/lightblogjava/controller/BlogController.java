@@ -13,10 +13,7 @@ import moe.leer.lightblogjava.util.CtrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,18 +59,20 @@ public class BlogController extends BaseController {
 
   @GetMapping("/like/{id}")
   public String likeBlog(HttpServletRequest request, HttpServletResponse response,
-                         Model model, @PathVariable("id") Long blogId) {
+                         Model model, @PathVariable("id") Long blogId,
+                         @RequestParam("redirect") String redirectURL) {
     Long userId = getCurrentUser(request).getUserId();
     blogDao.toggleLikeBlog(blogId, userId);
-    return CtrlUtil.redirectTo("/blog/" + blogId);
+    return CtrlUtil.redirectTo(redirectURL);
   }
 
   @GetMapping("/dislike/{id}")
   public String dislikeBlog(HttpServletRequest request, HttpServletResponse response,
-                            Model model, @PathVariable("id") Long blogId) {
+                            Model model, @PathVariable("id") Long blogId,
+                            @RequestParam("redirect") String redirectURL) {
     Long userId = getCurrentUser(request).getUserId();
     blogDao.toggleDislikeBlog(blogId, userId);
-    return CtrlUtil.redirectTo("/blog/" + blogId);
+    return CtrlUtil.redirectTo(redirectURL);
   }
 
   @GetMapping("/edit/{id}")
