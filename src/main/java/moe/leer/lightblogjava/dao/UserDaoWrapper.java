@@ -1,8 +1,9 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.User;
+import moe.leer.lightblogjava.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author leer
@@ -52,5 +53,17 @@ public class UserDaoWrapper implements UserDao {
   @Override
   public void unFollowUser(Long fromId, Long toId) {
     userDao.unFollowUser(fromId, toId);
+  }
+
+  // Should not be called
+  @Override
+  @Deprecated
+  public Long isFollowed(Long fromId, Long toId) {
+    throw new NotImplementedException();
+  }
+
+  public boolean isUserFollowed(Long fromId, Long toId) {
+    Long to = userDao.isFollowed(fromId, toId);
+    return to != null && to.equals(toId);
   }
 }

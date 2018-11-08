@@ -19,7 +19,7 @@ public class CtrlUtil {
 
   public static final String COOKIE_TOKEN = "token";
 
-  public static final String[] COOKIES = new String[] {COOKIE_TOKEN};
+  public static final String[] COOKIES = new String[]{COOKIE_TOKEN};
 
   public static void flashError(RedirectAttributes flash, Object msg) {
     flash.addAttribute(FLASH_ERROR, msg);
@@ -39,5 +39,14 @@ public class CtrlUtil {
 
   public static String isCookieMiss(HttpServletRequest request) {
     return CookieUtil.getValue(request, COOKIE_TOKEN);
+  }
+
+  public static String getCurrentURL(HttpServletRequest request) {
+    String queryString = request.getQueryString();
+    if ($.StringNullOrEmpty(queryString)) {
+      return request.getRequestURL().toString();
+    } else {
+      return request.getRequestURL().toString() + "?" + request.getQueryString();
+    }
   }
 }

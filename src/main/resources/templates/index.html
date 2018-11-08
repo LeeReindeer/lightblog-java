@@ -32,10 +32,6 @@
                             </div>
                             <div class="col-lg-10">
                                 <br>
-                                <!--fixme empty-->
-                                <!--<a href="/tag/{{.BlogTagId}}" th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"-->
-                                   <!--class="badge-pill badge-primary" th:text="'#' + ${blog.tagName}" th:if="${blog.tagName} ne null">-->
-                                <!--</a>&nbsp;-->
                                 <div>
                                     <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}" th:if="${blog.tagName} ne null"
                                        th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>

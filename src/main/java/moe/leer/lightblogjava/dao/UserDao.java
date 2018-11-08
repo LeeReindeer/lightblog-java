@@ -1,6 +1,6 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.User;
+import moe.leer.lightblogjava.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public interface UserDao {
   void saveUser(User uesr);
 
   // is fromId followed toId
-//  Boolean isUserFollow(Long fromId, Long toId);
+  Long isFollowed(@Param("fromId") Long fromId, @Param("toId") Long toId);
 
   //  use @Param for multi params
   void followUser(@Param("fromId") Long fromId, @Param("toId") Long toId);
