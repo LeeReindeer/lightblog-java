@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <meta name="description" content="404"/>
+    <meta name="author" content="LeeReindeer"/>
+    <title>前方一片荒芜，回头是岸</title>
+    <link href="../static/css/error.css" rel="stylesheet" th:href="@{/css/error.css}"/>
+    <link href="../static/css/error-mobile.css" rel="stylesheet" th:href="@{/css/error-mobile.css}"/>
+</head>
+<body>
+
+<div class="main">
+    <div class="title">这里啥也没有(◔౪◔)</div>
+    <div class="sorry">
+        <a class="text-center">在前往 <span th:text="${path}"></span> 的路上，我们遇到一个错误。</a>
+    </div>
+
+    <div class="content">
+        <h2 th:text="${'Error:' + status}"></h2>
+        <a th:text="'Message:' + ${message}"></a>
+        <br></br>
+        <a th:text="'Trace:' + ${trace}" th:if="${trace} ne null"></a>
+        <br th:if="${trace} ne null"></br>
+        <a th:text="'App message:' + ${param.flash_error}"></a>
+    </div>
+</div>
+
+
+<div class="back">
+    <input type="button" value="返回主页" onclick="location.href='/'"/>
+</div>
+
+<div class="footer">
+    <a href="https://github.com/LeeReindeer" target="_blank">Copyright © 2018 LeeReindeer</a>
+    <br></br>
+    <a>This page is made by <a href="https://github.com/carry0987/404-Error-Page" target="_blank">carry0987</a></a>
+</div>
+
+</body>
+</html>
