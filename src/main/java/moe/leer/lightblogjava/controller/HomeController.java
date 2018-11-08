@@ -8,6 +8,7 @@ import moe.leer.lightblogjava.model.Blog;
 import moe.leer.lightblogjava.model.LightBlog;
 import moe.leer.lightblogjava.model.Tag;
 import moe.leer.lightblogjava.model.User;
+import moe.leer.lightblogjava.service.PagingService;
 import moe.leer.lightblogjava.util.$;
 import moe.leer.lightblogjava.util.CtrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +33,20 @@ public class HomeController extends BaseController {
   private BlogDaoWrapper blogDao;
 
   @Autowired
+  private PagingService pagingService;
+
+  @Autowired
   private TagDao tagDao;
 
   @GetMapping({"/", "/index"})
   public String timeline(HttpServletRequest request, HttpServletResponse response,
                          Model model) {
     User user = getCurrentUser(request);
-    List<LightBlog> blogList = blogDao.getTimeline(user.getUserId());
+    int currentPage = pagingService.paging(request, model, user.getUserId());
+    List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(user.getUserId(), currentPage);
     model.addAttribute("username", user.getUserName());
     model.addAttribute("blogs", blogList);
-    String queryString = request.getQueryString();
-    if ($.StringNullOrEmpty(queryString)) {
-      model.addAttribute("redirect", request.getRequestURL());
-    } else {
-      model.addAttribute("redirect", request.getRequestURL() + "?" + request.getQueryString());
-    }
-    // todo paging
+    model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     return App.TEMPLATE_HOME;
   }
 

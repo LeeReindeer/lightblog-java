@@ -20,20 +20,21 @@
                     </div>
                 </form>
 
-                <ul class="list-group blog-content" th:each="blog : ${blogs}">
-
-                    <li class="list-group-item">
+                <ul class="list-group blog-content" style="margin-top: 4%" th:each="blog : ${blogs}">
+                    <li class="list-group-item" style="padding: 20px">
                         <div class="row">
                             <div class="col-lg-2">
                                 <a href="/user/LeeR" th:href="@{'/user/' + ${blog.userName}}">
                                     <img src="{{.BlogUserAvatar}}" th:src="${blog.userAvatar}" class="blog-avatar"/>
                                 </a>
-                                <a href="/user/{{.BlogUsername}}" th:href="@{'/user/' + ${blog.userName}}" th:text="'&nbsp;' + ${blog.userName}"></a>
+                                <a href="/user/{{.BlogUsername}}" th:href="@{'/user/' + ${blog.userName}}"
+                                   th:text="'&nbsp;' + ${blog.userName}"></a>
                             </div>
                             <div class="col-lg-10">
                                 <br>
                                 <div>
-                                    <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}" th:if="${blog.tagName} ne null"
+                                    <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}"
+                                       th:if="${blog.tagName} ne null"
                                        th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>
                                     <span th:text="${blog.blogPreview}" class="text-left"></span>
                                 </div>
@@ -65,22 +66,16 @@
                 <nav class="mt-1">
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                            <a class="page-link" th:href="@{/(page=${prev})}" th:if="${prev}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
+                        <li class="page-item" th:each="page : ${pages}">
+                            <a class="page-link" th:href="@{/(page=${page})}" th:text="${page}"></a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                            <a class="page-link" th:href="@{/(page=${next})}" th:if="${next}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>
