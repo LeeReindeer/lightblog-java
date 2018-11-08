@@ -1,6 +1,6 @@
 package moe.leer.lightblogjava;
 
-import moe.leer.lightblogjava.modle.LightBlog;
+import moe.leer.lightblogjava.model.LightBlog;
 import moe.leer.lightblogjava.dao.BlogDaoWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +27,8 @@ public class BlogDaoTests {
     List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(1L, 1);
     for (LightBlog lightBlog : blogList) {
       System.out.println(lightBlog.blogPreview);
+      System.out.println(lightBlog.blog.blogTime.toString());
+      System.out.println(lightBlog.getTimeString());
     }
     assertEquals(20, blogList.size());
   }
@@ -37,5 +39,13 @@ public class BlogDaoTests {
     for (LightBlog lightBlog : blogList) {
       System.out.println(lightBlog.blogPreview);
     }
+  }
+
+  @Test
+  public void testLikeBlog() {
+    System.out.println("inc:");
+    blogDao.toggleLikeBlog(36L, 1L);
+    System.out.println("dec:");
+    blogDao.toggleLikeBlog(36L, 1L);
   }
 }

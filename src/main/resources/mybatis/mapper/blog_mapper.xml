@@ -107,12 +107,12 @@
     <!--check blog like cnt > 0 in java code-->
     <update id="decLikeBlog">
         UPDATE blog
-        SET blog_like = blog_like + 1
+        SET blog_like = blog_like - 1
         WHERE blog_id = #{blogId};
-        DELETE
-        FROM blog_counter
+
+        DELETE FROM blog_counter
         WHERE blog_id = #{blogId}
-          AND user_id = #{blogId}
+          AND user_id = #{uid}
           AND count_type = 0;
     </update>
 
@@ -129,10 +129,10 @@
         UPDATE blog
         SET blog_unlike = blog_unlike - 1
         WHERE blog_id = #{blogId};
-        DELETE
-        FROM blog_counter
+
+        DELETE FROM blog_counter
         WHERE blog_id = #{blogId}
-          AND user_id = #{blogId}
+          AND user_id = #{uid}
           AND count_type = 1;
     </update>
     <update id="incBlogComment">

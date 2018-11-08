@@ -1,7 +1,7 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.Blog;
-import moe.leer.lightblogjava.modle.LightBlog;
+import moe.leer.lightblogjava.model.Blog;
+import moe.leer.lightblogjava.model.LightBlog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,13 +109,19 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.incLikeBlog(blogId, uid);
   }
 
-  // todo check
   @Override
   public void decLikeBlog(Long blogId, Long uid) {
-    if (blogDao.getBlogLike(blogId) > 0 && isLikedBlog(blogId, uid)) {
-      blogDao.decLikeBlog(blogId, uid);
+    blogDao.decLikeBlog(blogId, uid);
+  }
+
+  public void toggleLikeBlog(Long blogId, Long uid) {
+    boolean isLiked = isLikedBlog(blogId, uid);
+    if (isLiked) {
+      logger.warn("liked");
+      decLikeBlog(blogId, uid);
     } else {
-      logger.warn("like count <= 0");
+      logger.warn("inc like");
+      incLikeBlog(blogId, uid);
     }
   }
 
@@ -133,13 +139,20 @@ public class BlogDaoWrapper implements BlogDao {
 
   }
 
-  //todo  check
   @Override
   public void decDislikeBlog(Long blogId, Long uid) {
-    if (blogDao.getBlogUnlike(blogId) > 0 && isDislikeBlog(blogId, uid)) {
-      blogDao.decDislikeBlog(blogId, uid);
+    blogDao.decDislikeBlog(blogId, uid);
+  }
+
+  public void toggleDislikeBlog(Long blogId, Long uid) {
+    logger.warn("cnt: {}", blogDao.isUserDislikeBlog(blogId, uid));
+    boolean isDisliked = isDislikeBlog(blogId, uid);
+    if (isDisliked) {
+      logger.warn("disliked");
+      decDislikeBlog(blogId, uid);
     } else {
-      logger.warn("dislike count <= 0");
+      logger.warn("inc dislike");
+      incDislikeBlog(blogId, uid);
     }
   }
 
@@ -153,11 +166,14 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.decBlogComment(blogId);
   }
 
+  // Should not be called
+  @Deprecated
   @Override
   public int isUserLikedBlog(Long blogId, Long uid) {
     throw new NotImplementedException();
   }
 
+  @Deprecated
   @Override
   public int isUserDislikeBlog(Long blogId, Long uid) {
     throw new NotImplementedException();

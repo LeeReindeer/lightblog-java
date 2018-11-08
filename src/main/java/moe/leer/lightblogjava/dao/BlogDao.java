@@ -1,7 +1,7 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.Blog;
-import moe.leer.lightblogjava.modle.LightBlog;
+import moe.leer.lightblogjava.model.Blog;
+import moe.leer.lightblogjava.model.LightBlog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
