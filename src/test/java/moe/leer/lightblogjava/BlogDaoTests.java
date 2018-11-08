@@ -1,5 +1,6 @@
 package moe.leer.lightblogjava;
 
+import moe.leer.lightblogjava.model.Blog;
 import moe.leer.lightblogjava.model.LightBlog;
 import moe.leer.lightblogjava.dao.BlogDaoWrapper;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,5 +49,12 @@ public class BlogDaoTests {
     blogDao.toggleLikeBlog(36L, 1L);
     System.out.println("dec:");
     blogDao.toggleLikeBlog(36L, 1L);
+  }
+
+  @Test
+  public void testUpload() {
+    String update = "update";
+    blogDao.updateBlog(36L, update, new Date());
+    assertEquals(update, blogDao.getBlogById(36L).blog.blogContent);
   }
 }

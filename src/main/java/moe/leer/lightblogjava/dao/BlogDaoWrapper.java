@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,9 +85,10 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.saveBlog(blog);
   }
 
+
   @Override
-  public void updateBlog(Blog blog) {
-    blogDao.updateBlog(blog);
+  public void updateBlog(Long id, String newContent, Date newDate) {
+    blogDao.updateBlog(id, newContent, newDate);
   }
 
   @Override

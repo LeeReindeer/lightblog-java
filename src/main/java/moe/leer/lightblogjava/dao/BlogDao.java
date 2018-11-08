@@ -5,6 +5,7 @@ import moe.leer.lightblogjava.model.LightBlog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,13 +27,14 @@ public interface BlogDao {
 
   void saveBlog(Blog blog);
 
-  void updateBlog(Blog blog);
+  void updateBlog(@Param("id") Long id, @Param("content") String newContent, @Param("date") Date newDate);
 
   void deleteBlog(Long blogId);
 
 
   /**
    * get like count for the blog
+   *
    * @param blogId the id
    */
   Integer getBlogLike(Long blogId);
