@@ -1,16 +1,12 @@
 package moe.leer.lightblogjava.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import moe.leer.lightblogjava.util.$;
 
 /**
  * @author leer
  * Created at 10/22/18 7:55 PM
  */
 public class LightBlog {
-
-  private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-
   public Long id;
   public Blog blog;
   // extra data for convenience
@@ -25,7 +21,7 @@ public class LightBlog {
   }
 
   public String getTimeString() {
-    return dateFormat.format(this.blog.blogTime);
+    return $.formatTime(this.blog.blogTime);
   }
 
   @Override

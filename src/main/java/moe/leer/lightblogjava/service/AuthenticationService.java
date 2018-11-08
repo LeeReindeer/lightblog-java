@@ -8,7 +8,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import moe.leer.lightblogjava.dao.UserDaoWrapper;
-import moe.leer.lightblogjava.modle.User;
+import moe.leer.lightblogjava.model.User;
 import moe.leer.lightblogjava.util.CipherUtil;
 import moe.leer.lightblogjava.util.CtrlUtil;
 import org.slf4j.Logger;

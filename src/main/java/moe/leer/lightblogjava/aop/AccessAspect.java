@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +28,8 @@ public class AccessAspect {
   private AuthenticationService authService;
 
   @Around("execution(* moe.leer.lightblogjava.controller.*.*(..)) " +
-      "&& !execution(* moe.leer.lightblogjava.controller.UserController.*(..))")
+      "&& !execution(* moe.leer.lightblogjava.controller.UserController.*(..))" +
+      "&& !execution(* moe.leer.lightblogjava.controller.ErrorController.*(..))")
   public String around(ProceedingJoinPoint joinPoint) {
     //check login
     HttpServletRequest request = null;
@@ -60,6 +60,6 @@ public class AccessAspect {
       return CtrlUtil.redirectTo("/login");
     }
     CookieUtil.clearRoot(response, CtrlUtil.COOKIES);
-    return "/error"; //todo write error page
+    return "/error";
   }
 }

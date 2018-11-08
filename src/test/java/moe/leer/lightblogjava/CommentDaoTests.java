@@ -1,7 +1,7 @@
 package moe.leer.lightblogjava;
 
 import moe.leer.lightblogjava.dao.CommentDao;
-import moe.leer.lightblogjava.modle.Comment;
+import moe.leer.lightblogjava.model.Comment;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@
     <resultMap id="tagMap" type="Tag">
         <id property="tagId" column="tag_id" javaType="Long" jdbcType="BIGINT"/>
         <result property="tagName" column="tag_name" javaType="String" jdbcType="VARCHAR"/>
-        <result property="tagTime" column="tag_time" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="tagTime" column="tag_time" javaType="java.util.Date"/>
     </resultMap>
 
     <select id="getTagById" parameterType="Long" resultMap="tagMap">

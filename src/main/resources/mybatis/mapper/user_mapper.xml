@@ -97,4 +97,11 @@
         FROM user
         WHERE user_id = #{id};
     </select>
+
+    <select id="isFollowed" resultType="Long">
+        SELECT user_to
+        FROM fan_follow
+        WHERE user_from = #{fromId}
+        AND user_to = #{toId};
+    </select>
 </mapper>

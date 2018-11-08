@@ -1,6 +1,6 @@
 package moe.leer.lightblogjava.base;
 
-import moe.leer.lightblogjava.modle.User;
+import moe.leer.lightblogjava.model.User;
 import moe.leer.lightblogjava.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BaseController {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Autowired
   protected AuthenticationService authService;

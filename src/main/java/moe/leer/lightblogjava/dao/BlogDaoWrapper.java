@@ -47,6 +47,7 @@ public class BlogDaoWrapper implements BlogDao {
     return this.getTimelineByUIDWithPaging(uid, 1);
   }
 
+  // page start from 1
   @Override
   public List<LightBlog> getTimelineByUIDWithPaging(Long uid, int page) {
     List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(uid, (page - 1) * 20);

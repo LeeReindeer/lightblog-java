@@ -12,7 +12,9 @@ public class App {
   public static final String TEMPLATE_HOME = "index";
   public static final String TEMPLATE_PROFILE = "profile";
   public static final String TEMPLATE_DETAIL = "detail";
-  //TODO MORE
+  public static final String TEMPLATE_EDITBLOG = "edit_blog";
+  public static final String TEMPLATE_ERROR = "error";
+  public static final String TEMPLATE_TAG = "tag_blog";
 
   public static void main(String[] args) {
 //    System.out.println(CipherUtil.getPasswordHash("0915"));

@@ -43,9 +43,9 @@
         WHERE blog_id = #{blogId};
     </select>
 
-    <select id="getBlogById" resultMap="blogMap">
+    <select id="getBlogById" resultMap="lightBlogMap">
         SELECT *
-        FROM blog
+        FROM blogdetail
         WHERE blog_id = #{id};
     </select>
 
@@ -53,6 +53,13 @@
         SELECT *
         FROM blogdetail
         WHERE blog_uid = #{uid}
+        ORDER BY blog_time DESC
+    </select>
+
+    <select id="getBlogsWithTag" resultMap="lightBlogMap">
+        SELECT *
+        FROM blogdetail
+        WHERE blog_tag_id = #{tagId}
         ORDER BY blog_time DESC
     </select>
 
@@ -89,11 +96,11 @@
         VALUES (#{blogUid}, #{blogTagId}, #{blogContent}, #{blogTime}, #{blogLike}, #{blogUnLike}, #{blogComment})
     </insert>
 
-    <update id="updateBlog" parameterType="Blog">
+    <update id="updateBlog">
         UPDATE blog
-        SET blog_content = #{blogContent},
-            blog_time    = #{blogTime}
-        WHERE blog_id = #{blogId}
+        SET blog_content = #{content},
+            blog_time    = #{date}
+        WHERE blog_id = #{id};
     </update>
 
     <update id="incLikeBlog">
@@ -110,7 +117,8 @@
         SET blog_like = blog_like - 1
         WHERE blog_id = #{blogId};
 
-        DELETE FROM blog_counter
+        DELETE
+        FROM blog_counter
         WHERE blog_id = #{blogId}
           AND user_id = #{uid}
           AND count_type = 0;
@@ -130,7 +138,8 @@
         SET blog_unlike = blog_unlike - 1
         WHERE blog_id = #{blogId};
 
-        DELETE FROM blog_counter
+        DELETE
+        FROM blog_counter
         WHERE blog_id = #{blogId}
           AND user_id = #{uid}
           AND count_type = 1;

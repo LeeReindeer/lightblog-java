@@ -11,10 +11,10 @@
         <typeAlias alias="Date" type="java.util.Date"/>
         <typeAlias alias="String" type="java.lang.String"/>
 
-        <typeAlias alias="Blog" type="moe.leer.lightblogjava.modle.Blog"/>
-        <typeAlias alias="LightBlog" type="moe.leer.lightblogjava.modle.LightBlog"/>
-        <typeAlias alias="Comment" type="moe.leer.lightblogjava.modle.Comment"/>
-        <typeAlias alias="Tag" type="moe.leer.lightblogjava.modle.Tag"/>
-        <typeAlias alias="User" type="moe.leer.lightblogjava.modle.User"/>
+        <typeAlias alias="Blog" type="moe.leer.lightblogjava.model.Blog"/>
+        <typeAlias alias="LightBlog" type="moe.leer.lightblogjava.model.LightBlog"/>
+        <typeAlias alias="Comment" type="moe.leer.lightblogjava.model.Comment"/>
+        <typeAlias alias="Tag" type="moe.leer.lightblogjava.model.Tag"/>
+        <typeAlias alias="User" type="moe.leer.lightblogjava.model.User"/>
     </typeAliases>
 </configuration>
