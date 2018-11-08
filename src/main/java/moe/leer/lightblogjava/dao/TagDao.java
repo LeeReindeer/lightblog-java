@@ -1,6 +1,6 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.Tag;
+import moe.leer.lightblogjava.model.Tag;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 public interface TagDao {
 
   Tag getTagById(Long tagId);
+
+  Tag getTagByName(String tagName);
 
   String getTagName(Long tagId);
 
