@@ -81,6 +81,13 @@ public class BlogDaoWrapper implements BlogDao {
   }
 
   @Override
+  public List<LightBlog> getBlogsWithTag(long tagId) {
+    List<LightBlog> blogList = blogDao.getBlogsWithTag(tagId);
+    blogList.forEach(lightBlog -> processLightBlog(lightBlog, tagDao));
+    return blogList;
+  }
+
+  @Override
   public void saveBlog(Blog blog) {
     blogDao.saveBlog(blog);
   }

@@ -1,4 +1,4 @@
-package moe.leer.lightblogjava.modle;
+package moe.leer.lightblogjava.model;
 
 import java.util.Date;
 
@@ -30,6 +30,7 @@ public class Blog {
     this.blogUid = blogUid;
     this.blogContent = blogContent;
     this.blogTime = blogTime;
+    this.blogLike = this.blogUnLike = this.blogComment = 0;
   }
 
   // create blog with tag
@@ -48,6 +49,14 @@ public class Blog {
 
   public Long getBlogTagId() {
     return blogTagId;
+  }
+
+  public void setBlogUid(Long blogUid) {
+    this.blogUid = blogUid;
+  }
+
+  public void setBlogTagId(Long blogTagId) {
+    this.blogTagId = blogTagId;
   }
 
   @Override

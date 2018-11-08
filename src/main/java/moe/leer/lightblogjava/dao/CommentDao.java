@@ -1,6 +1,6 @@
 package moe.leer.lightblogjava.dao;
 
-import moe.leer.lightblogjava.modle.Comment;
+import moe.leer.lightblogjava.model.Comment;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

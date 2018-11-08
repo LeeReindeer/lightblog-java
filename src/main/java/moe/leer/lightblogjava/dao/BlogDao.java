@@ -25,6 +25,8 @@ public interface BlogDao {
 
   List<LightBlog> getBlogsByUID(long uid);
 
+  List<LightBlog> getBlogsWithTag(long tagId);
+
   void saveBlog(Blog blog);
 
   void updateBlog(@Param("id") Long id, @Param("content") String newContent, @Param("date") Date newDate);

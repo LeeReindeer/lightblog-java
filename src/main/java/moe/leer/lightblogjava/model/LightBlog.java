@@ -1,8 +1,7 @@
-package moe.leer.lightblogjava.modle;
+package moe.leer.lightblogjava.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.util.logging.SimpleFormatter;
 
 /**
  * @author leer

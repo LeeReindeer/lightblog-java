@@ -1,4 +1,4 @@
-package moe.leer.lightblogjava.modle;
+package moe.leer.lightblogjava.model;
 
 import java.util.Date;
 import java.util.List;
