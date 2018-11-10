@@ -24,7 +24,8 @@
 
 <!--top nav bar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="header">
-    <a href="/" class="navbar-brand">LightBlog</a>
+
+        <a href="/" class="navbar-brand">LightBlog<span class="badge-pill badge-info badge-secondary">Beta</span></a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItems"
             aria-controls="navbarItems"
@@ -48,9 +49,9 @@
                    aria-haspopup="true" aria-expanded="false" th:text="${username}">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">设置</a>
+                    <!--<a class="dropdown-item" href="#">设置</a>-->
                     <a class="dropdown-item" href="/logout">登出</a>
-                    <a class="dropdown-item" href="/about">关于</a>
+                    <a class="dropdown-item" href="https://github.com/LeeReindeer/lightblog-java">关于</a>
                 </div>
             </li>
         </ul>
