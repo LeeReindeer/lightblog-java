@@ -28,7 +28,7 @@ public class AccessAspect {
   private AuthenticationService authService;
 
   @Around("execution(* moe.leer.lightblogjava.controller.*.*(..)) " +
-      "&& !execution(* moe.leer.lightblogjava.controller.UserController.*(..))" +
+      "&& !execution(* moe.leer.lightblogjava.controller.UserController.exposed*(..))" +
       "&& !execution(* moe.leer.lightblogjava.controller.ErrorController.*(..))")
   public String around(ProceedingJoinPoint joinPoint) {
     //check login

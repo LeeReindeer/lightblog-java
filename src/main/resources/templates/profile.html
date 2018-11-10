@@ -26,8 +26,8 @@
                         粉丝 <span class="badge badge-light" th:text="${user.userFollowers}">UserFollowers</span>
                     </button>
                     <div th:if="${user.userId ne loginUserId}">
-                        <a href="/user/{{.user.UserName}}?unfollow=true" th:if="${followed}" class="btn btn-secondary">取消关注</a>
-                        <a href="/user/{{.user.UserName}}?follow=true" th:unless="${followed}"
+                        <a href="/user/UserName/unfollow" th:href="@{'/user/' + ${user.userName} + '/unfollow'}" th:if="${followed}" class="btn btn-secondary">取消关注</a>
+                        <a href="/user/UserName/follow" th:href="@{'/user/' + ${user.userName} + '/follow'}"  th:unless="${followed}"
                            class="btn btn-info">关注ta</a>
                     </div>
                 </center>

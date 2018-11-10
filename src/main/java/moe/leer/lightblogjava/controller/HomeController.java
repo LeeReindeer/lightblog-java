@@ -42,7 +42,13 @@ public class HomeController extends BaseController {
   public String timeline(HttpServletRequest request, HttpServletResponse response,
                          Model model) {
     User user = getCurrentUser(request);
-    int currentPage = pagingService.paging(request, model, user.getUserId());
+    int currentPage = pagingService.paging(request, model, new PagingService.Callback() {
+      @Override
+      public long callback(Object[] objects) {
+        return blogDao.getTimelineCnt(user.getUserId());
+      }
+    });
+
     List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(user.getUserId(), currentPage);
     model.addAttribute("username", user.getUserName());
     model.addAttribute("blogs", blogList);

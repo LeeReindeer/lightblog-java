@@ -34,15 +34,15 @@ public class UserController extends BaseController {
   private UserDaoWrapper userDao;
 
   @GetMapping("/register")
-  public String getRegister(HttpServletRequest request, HttpServletResponse response, Model model) {
+  public String exposedGetRegister(HttpServletRequest request, HttpServletResponse response, Model model) {
     model.addAttribute("register", true);
     model.addAttribute("login", false);
     return App.TEMPLATE_LOGIN;
   }
 
   @PostMapping("/register")
-  public String postRegister(HttpServletRequest request, HttpServletResponse response,
-                      String username, String password, String passwordAgain, RedirectAttributes flash) {
+  public String exposedPostRegister(HttpServletRequest request, HttpServletResponse response,
+                                    String username, String password, String passwordAgain, RedirectAttributes flash) {
     // check params
     if ($.StringNotNullAndEmpty(username)) {
       User exitUser = userDao.getUserByName(username);
@@ -67,8 +67,8 @@ public class UserController extends BaseController {
   }
 
   @GetMapping("/login")
-  public String getLogin(HttpServletRequest request, HttpServletResponse response,
-                  Model model) {
+  public String exposedGetLogin(HttpServletRequest request, HttpServletResponse response,
+                                Model model) {
     if (isLogin(request)) {
       return CtrlUtil.redirectTo("/");
     }
@@ -78,8 +78,8 @@ public class UserController extends BaseController {
   }
 
   @PostMapping("/login")
-  public String postLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
-                   String username, String password /*boolean rememberMe*/) {
+  public String exposedPostLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
+                                 String username, String password /*boolean rememberMe*/) {
     if ($.StringNullOrEmpty(password)|| $.StringNullOrEmpty(username)) {
       return CtrlUtil.redirectTo("/login");
     }
@@ -103,7 +103,7 @@ public class UserController extends BaseController {
   }
 
   @GetMapping("logout")
-  public String logout(HttpServletRequest request, HttpServletResponse response) {
+  public String exposedLogout(HttpServletRequest request, HttpServletResponse response) {
     CookieUtil.clearRoot(response, CtrlUtil.COOKIES);
     logger.info("logout succeed");
     return CtrlUtil.redirectTo("/login");
@@ -128,5 +128,33 @@ public class UserController extends BaseController {
     model.addAttribute("blogs", thatUser.myBlogs);
     model.addAttribute("followed", userDao.isUserFollowed(thisUser.getUserId(), thatUser.getUserId()));
     return App.TEMPLATE_PROFILE;
+  }
+
+  @GetMapping("/user/{username}/follow")
+  public String followUser(HttpServletRequest request, HttpServletResponse response,
+                            Model model, @PathVariable("username") String username, RedirectAttributes flash)
+      throws UnsupportedEncodingException {
+    User thatUser = userDao.getUserByName(username);
+    if (thatUser == null) {
+      logger.error("user not exits");
+      CtrlUtil.flashError(flash, "用户不存在");
+      return CtrlUtil.redirectTo("/error");
+    }
+    userDao.followUser(getCurrentUser(request).getUserId(), thatUser.getUserId());
+    return CtrlUtil.redirectTo("/user/" + URLEncoder.encode(username, "UTF-8"));
+  }
+
+  @GetMapping("/user/{username}/unfollow")
+  public String unfollowUser(HttpServletRequest request, HttpServletResponse response,
+                           Model model, @PathVariable("username") String username, RedirectAttributes flash)
+      throws UnsupportedEncodingException {
+    User thatUser = userDao.getUserByName(username);
+    if (thatUser == null) {
+      logger.error("user not exits");
+      CtrlUtil.flashError(flash, "用户不存在");
+      return CtrlUtil.redirectTo("/error");
+    }
+    userDao.unFollowUser(getCurrentUser(request).getUserId(), thatUser.getUserId());
+    return CtrlUtil.redirectTo("/user/" + URLEncoder.encode(username, "UTF-8"));
   }
 }
