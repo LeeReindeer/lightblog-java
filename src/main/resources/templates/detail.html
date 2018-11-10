@@ -27,7 +27,7 @@
                                     <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}"
                                        th:if="${blog.tagName} ne null"
                                        th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>
-                                    <span th:text="${blog.blogPreview}" class="text-left"></span>
+                                    <span th:text="${blog.blog.blogContent}" class="text-left"></span>
                                 </div>
                                 <div class="float-right ml-2 mr-2">
                                 <span>
@@ -47,8 +47,11 @@
                                             <span th:text="'&nbsp;' + ${blog.blog.blogComment}"></span>
                                         </a>
                                         <a th:href="@{'/blog/edit/' + ${blog.id}}"
-                                           class="text-info">编辑</a>|
-                                        <a th:href="@{'/blog/delete/' + ${blog.id}}" class="text-danger">删除</a>
+                                           class="text-info"
+                                           th:if="${user.userName} eq ${blog.userName}">编辑</a>|
+                                        <a th:href="@{'/blog/delete/' + ${blog.id}}"
+                                           th:if="${user.userName} eq ${blog.userName}"
+                                           class="text-danger">删除</a>
                                 </span>
                                 </div>
                             </div>
