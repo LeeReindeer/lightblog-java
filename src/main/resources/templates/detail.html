@@ -81,10 +81,10 @@
                 <div th:each="comment, iter : ${comments}">
                     <div class="comment-wrap">
                         <div class="photo">
-                            <a href="#" th:href="@{/user/${comment.commFromName}}">
+                            <a href="#" th:href="@{'/user/' + ${comment.commFromName}}">
                                 <img src="#" th:src="${comment.commFromAvatar}" class="blog-avatar"/>
                             </a>
-                            <a href="#" th:href="@{/user/${comment.commFromName}}"
+                            <a href="#" th:href="@{'/user/' + ${comment.commFromName}}"
                                th:text="${comment.commFromName}">CommFromName</a>
                         </div>
                         <div class="comment-block">
