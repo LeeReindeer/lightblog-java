@@ -18,9 +18,6 @@ public class App {
   public static final String TEMPLATE_SEARCH = "search";
 
   public static void main(String[] args) {
-//    System.out.println(CipherUtil.getPasswordHash("0915"));
-//    System.out.println(CipherUtil.getPasswordHash("0915"));
-
     SpringApplication.run(App.class, args);
   }
 }
