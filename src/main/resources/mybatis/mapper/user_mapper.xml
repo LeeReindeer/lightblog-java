@@ -102,6 +102,12 @@
         SELECT user_to
         FROM fan_follow
         WHERE user_from = #{fromId}
-        AND user_to = #{toId};
+          AND user_to = #{toId};
+    </select>
+
+    <select id="searchAll" resultMap="userMap">
+        SELECT *
+        FROM user
+        WHERE user_name LIKE CONCAT('%', #{key}, '%');
     </select>
 </mapper>

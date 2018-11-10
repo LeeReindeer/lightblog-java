@@ -15,6 +15,8 @@ import java.util.List;
 @Component
 public interface BlogDao {
 
+  List<LightBlog> searchAll(String key);
+
   List<LightBlog> getTimelineByUIDWithPaging(@Param("uid") Long uid, @Param("page") int page);
 
   Long getTimelineCnt(Long uid);

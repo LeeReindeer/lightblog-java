@@ -4,12 +4,17 @@ import moe.leer.lightblogjava.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author leer
  * Created at 10/23/18 3:11 PM
  */
 @Component
 public interface UserDao {
+
+  List<User> searchAll(String key);
+
   User getUserByName(String name);
 
   User getUserProfile(Long uid);

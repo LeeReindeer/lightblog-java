@@ -42,6 +42,13 @@ public class BlogDaoWrapper implements BlogDao {
       lightBlog.tagName = tagDao.getTagName(lightBlog.blog.getBlogTagId());
   }
 
+  @Override
+  public List<LightBlog> searchAll(String key) {
+    List<LightBlog> blogList = blogDao.searchAll(key);
+    blogList.forEach(blog -> processLightBlog(blog, tagDao));
+    return blogList;
+  }
+
   // get first page of timeline
   public List<LightBlog> getTimeline(Long uid) {
     return this.getTimelineByUIDWithPaging(uid, 1);
