@@ -18,16 +18,18 @@ public class PagingService {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  @Autowired
-  private BlogDaoWrapper blogDao;
+  public interface Callback<ARG> {
+    long callback(ARG... args);
+  }
 
-  public int paging(HttpServletRequest request, Model model, Long uid) {
+  @SuppressWarnings({"unchecked", "ConfusingArgumentToVarargsMethod"})
+  public int paging(HttpServletRequest request, Model model, Callback callback) {
     logger.info("page={}", request.getQueryString());
     int currentPage = 1;
     if (request.getQueryString() != null && request.getQueryString().startsWith("page=")) {
       currentPage = Integer.parseInt(request.getQueryString().substring(5));
     }
-    long cnt = blogDao.getTimelineCnt(uid);
+    long cnt = callback.callback(null);
     long pages = cnt / 20;
     if (cnt % 20 != 0) pages += 1;
     long[] pagesArray = new long[(int) pages];

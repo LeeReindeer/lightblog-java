@@ -15,6 +15,7 @@ public class App {
   public static final String TEMPLATE_EDITBLOG = "edit_blog";
   public static final String TEMPLATE_ERROR = "error";
   public static final String TEMPLATE_TAG = "tag_blog";
+  public static final String TEMPLATE_SEARCH = "search";
 
   public static void main(String[] args) {
 //    System.out.println(CipherUtil.getPasswordHash("0915"));

@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
+<head th:include="layout :: htmlhead">
+</head>
+
+<nav th:replace="layout :: header">
+</nav>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 align-items-center align-self-center">
+                <!--search users result-->
+                <ul class="list-inline">
+                    <li class="photo" th:each="user : ${users}" th:if="${users}" >
+                        <a href="#" th:href="@{'/user/' + ${user.userName}}">
+                            <img src="#" th:src="${user.userAvatar}" class="blog-avatar"/>
+                        </a>
+                        <a href="#" th:href="@{'/user/' + ${user.userName}}"
+                           th:text="${user.userName}">username</a>
+                    </li>
+                </ul>
+                <!--search blogs result-->
+                <ul class="list-group blog-content" style="margin-top: 4%"th:if="${blogs}">
+                    <li class="list-group-item" th:each="blog : ${blogs}"  style="padding: 20px">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <a href="/user/LeeR" th:href="@{'/user/' + ${blog.userName}}">
+                                    <img src="{{.BlogUserAvatar}}" th:src="${blog.userAvatar}" class="blog-avatar"/>
+                                </a>
+                                <a href="/user/{{.BlogUsername}}" th:href="@{'/user/' + ${blog.userName}}"
+                                   th:text="'&nbsp;' + ${blog.userName}"></a>
+                            </div>
+                            <div class="col-lg-10">
+                                <br>
+                                <div>
+                                    <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}"
+                                       th:if="${blog.tagName} ne null"
+                                       th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>
+                                    <span th:text="${blog.blogPreview}" class="text-left"></span>
+                                </div>
+                                <div class="float-right ml-2 mr-2">
+                                <span>
+                                    <a href="#" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
+                                    <a href="/blog/{{.BlogId}}" th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
+                                    <span>
+                                    <a href="#" th:href="@{'/blog/like/' + ${blog.id}(redirect=${redirect})}">
+                                        <i class="fa fa-thumbs-up"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogLike}"></span>
+                                    </a> |
+                                    <a href="#" th:href="@{'/blog/dislike/' + ${blog.id}(redirect=${redirect})}">
+                                        <i class="fa fa-thumbs-down"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogUnLike}"></span>
+                                    </a> |
+                                    <a href="#">
+                                        <i class="fa fa-comments"></i>
+                                        <span th:text="'&nbsp;' + ${blog.blog.blogComment}"></span>
+                                    </a>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <p class="text-primary text-lg-center" th:unless="${blogs} AND ${users}">( ⊙ o ⊙ )啊！什么也没有</p>
+
+                <nav class="mt-1">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/(page=${prev})}" th:if="${prev}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="page : ${pages}">
+                            <a class="page-link" th:href="@{/(page=${page})}" th:text="${page}"></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/(page=${next})}" th:if="${next}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
