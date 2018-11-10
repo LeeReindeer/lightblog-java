@@ -69,7 +69,7 @@
                     </div>
                     <div class="comment-block">
                         <form action="/comment" method="post">
-                            <textarea name="commentContent" cols="30" rows="3" placeholder="你的看法？"></textarea>
+                            <textarea name="commentContent" cols="30" rows="3" placeholder="你的看法？" required="required"></textarea>
                             <input type="hidden" name="blogId" value="{{.blog.BlogId}}" th:value="${blog.id}">
                             <input type="hidden" name="fromUserId" value="{{.thisUser.UserId}}"
                                    th:value="${user.userId}">
@@ -134,7 +134,7 @@
                                 <div class="comment-block modal-body">
                                     <form action="/comment" method="post">
                                         <textarea name="commentContent" cols="30" rows="3"
-                                                  placeholder="你的看法？"></textarea>
+                                                  placeholder="你的看法？" required="required"></textarea>
                                         <input type="hidden" name="blogId" th:value="${blog.id}">
                                         <input type="hidden" name="fromUserId" th:value="${user.userId}">
                                         <input type="hidden" name="toUserId" id="toUserIdInput" th:value="${comment.commFromUid}">
