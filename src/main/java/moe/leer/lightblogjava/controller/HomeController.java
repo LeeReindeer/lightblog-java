@@ -12,10 +12,12 @@ import moe.leer.lightblogjava.service.PagingService;
 import moe.leer.lightblogjava.util.$;
 import moe.leer.lightblogjava.util.CtrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +60,7 @@ public class HomeController extends BaseController {
 
   @PostMapping({"/", "/index"})
   public String newLight(HttpServletRequest request, HttpServletResponse response,
-                         Model model, String content) {
+                         Model model, String content, RedirectAttributes flash) {
     if ($.StringNullOrEmpty(content)) {
       return CtrlUtil.redirectTo("/");
     }
@@ -78,7 +80,14 @@ public class HomeController extends BaseController {
         logger.info("use exist tag {}", existTag);
       }
     }
-    blogDao.saveBlog(blog);
+    // todo support emoji
+    try {
+      blogDao.saveBlog(blog);
+    } catch (Exception e) {
+      logger.error("occur unsupported string");
+      CtrlUtil.flashError(flash, "未发布成功：不支持的文本类型");
+      return CtrlUtil.redirectTo("/");
+    }
     return CtrlUtil.redirectTo("/");
   }
 }

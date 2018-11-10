@@ -19,6 +19,12 @@
                         <input type="submit" class="btn btn-primary" value="发布"/>
                     </div>
                 </form>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.flash_error} ne null">
+                    <strong th:text="${param.flash_error}"></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
                 <ul class="list-group blog-content" style="margin-top: 4%" th:each="blog : ${blogs}">
                     <li class="list-group-item" style="padding: 20px">
