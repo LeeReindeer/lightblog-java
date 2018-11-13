@@ -101,7 +101,7 @@
                                 <div class="comment-date" th:text="${comment.timeString}"></div>
                                 <ul class="comment-actions">
                                     <li class="reply">
-                                        <a th:href="@{'/comment/like' + ${comment.commId}(redirect=${redirect})}">
+                                        <a th:href="@{'/comment/like/' + ${comment.commId}(redirect=${redirect})}">
                                             <i class="fa fa-heart"></i>
                                             <span th:text="' ' + ${comment.commLike}"></span>
                                         </a>
