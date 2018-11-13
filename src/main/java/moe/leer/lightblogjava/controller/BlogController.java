@@ -91,7 +91,12 @@ public class BlogController extends BaseController {
     LightBlog prevBlog = blogDao.getBlogById(blogId);
     if ($.StringNullOrEmpty(content) || prevBlog.blog.blogContent.equals(content)) return CtrlUtil.redirectTo(redirect);
     logger.warn("update blog");
-    blogDao.updateBlog(blogId, content, new Date());
+    try {
+      blogDao.updateBlog(blogId, content, new Date());
+    } catch (Exception e) {
+      logger.error("occur unsupported string");
+      return CtrlUtil.redirectTo(redirect);
+    }
     return CtrlUtil.redirectTo(redirect);
   }
 }
