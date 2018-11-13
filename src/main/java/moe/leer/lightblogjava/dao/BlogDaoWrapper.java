@@ -2,6 +2,7 @@ package moe.leer.lightblogjava.dao;
 
 import moe.leer.lightblogjava.model.Blog;
 import moe.leer.lightblogjava.model.LightBlog;
+import moe.leer.lightblogjava.service.PagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class BlogDaoWrapper implements BlogDao {
   // page start from 1
   @Override
   public List<LightBlog> getTimelineByUIDWithPaging(Long uid, int page) {
-    List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(uid, (page - 1) * 20);
+    List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(uid, (page - 1) * PagingService.PAGE_SIZE);
     blogList.forEach(blog -> processLightBlog(blog, tagDao));
     return blogList;
   }

@@ -18,6 +18,8 @@ public class PagingService {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  public static final int PAGE_SIZE = 20;
+
   public interface Callback<ARG> {
     long callback(ARG... args);
   }
@@ -30,8 +32,8 @@ public class PagingService {
       currentPage = Integer.parseInt(request.getQueryString().substring(5));
     }
     long cnt = callback.callback(null);
-    long pages = cnt / 20;
-    if (cnt % 20 != 0) pages += 1;
+    long pages = cnt / PAGE_SIZE;
+    if (cnt % PAGE_SIZE != 0) pages += 1;
     long[] pagesArray = new long[(int) pages];
     for (int i = 0; i < pages; i++) {
       pagesArray[i] = i + 1;
