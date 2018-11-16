@@ -6,6 +6,7 @@ import moe.leer.lightblogjava.model.LightBlog;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * @author leer
@@ -51,6 +52,8 @@ public class $ {
   }
 
   public static String formatTime(Date date) {
+    // App build just for GMT+8 Timezone
+    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
     return dateFormat.format(date);
   }
 
