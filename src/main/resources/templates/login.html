@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS-->
     <link href="../static/css/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.css}">
+    <link href="../static/css/main.css" rel="stylesheet" media="screen" th:href="@{/css/main.css}">
     <title>Login</title>
 </head>
 
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-4 offset-4 mt-5">
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xl-6 col-6 offset-3 mt-5">
+            <h1 class="text-center login-logo">LightBlog</h1>
             <form class="align-self-center" action="" method="post">
                 <div class="form-group">
                     <label for="usernameInput">用户名：</label>
@@ -48,7 +50,7 @@
 
                 <div class="form-group" th:if="${login} eq true">
                     <input class="btn btn-primary" type="submit" placeholder="登录" value="登录">
-                    <a class="btn btn-primary" href="/register">注册新帐号</a>
+                    <a class="btn btn-info" href="/register">注册新帐号</a>
                 </div>
 
                 <div class="form-group" th:if="${register} eq true">
@@ -64,5 +66,7 @@
 <script src="../static/js/jquery.js" th:src="@{/js/jquery.js}"></script>
 <script src="../static/js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
 </body>
+
+<footer th:replace="layout::footer"></footer>
 
 </html>

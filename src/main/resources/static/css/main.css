@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto', Arial, Helvetica, Sans-serif, Verdana, serif;
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
     background: #e6ecf0;
 }
 
@@ -45,4 +45,17 @@ ul {
     width: 64px;
     height: 64px;
     border-radius: 50%;
+}
+
+.login-logo {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+    font-weight: bold;
+    font-size: xx-large;
+    color: #007bff;
+}
+
+.copyright {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
