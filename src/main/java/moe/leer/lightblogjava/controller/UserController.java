@@ -122,7 +122,6 @@ public class UserController extends BaseController {
 
     thatUser = userDao.getUserProfile(thatUser.getUserId());
 
-    model.addAttribute("user", thatUser);
     model.addAttribute("loginUserId", thisUser.getUserId());
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     model.addAttribute("blogs", thatUser.myBlogs);

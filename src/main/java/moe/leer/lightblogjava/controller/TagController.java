@@ -38,7 +38,6 @@ public class TagController extends BaseController {
       return CtrlUtil.redirectTo("/");
     }
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
-    model.addAttribute("user", getCurrentUser(request));
     model.addAttribute("tag", tag);
     model.addAttribute("blogs", blogDao.getBlogsWithTag(tagId));
     return App.TEMPLATE_TAG;

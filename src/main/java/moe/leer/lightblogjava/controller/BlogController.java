@@ -41,8 +41,8 @@ public class BlogController extends BaseController {
     LightBlog lightBlog = blogDao.getBlogDetail(blogId);
     List<Comment> comments = commentDao.getAllByBlogId(blogId);
 
-    model.addAttribute("user", user);
-    model.addAttribute("username", user.getUserName());
+//    model.addAttribute("user", user);
+//    model.addAttribute("username", user.getUserName());
     model.addAttribute("blog", lightBlog);
     model.addAttribute("comments", comments);
     model.addAttribute("redirect", request.getRequestURL().toString());

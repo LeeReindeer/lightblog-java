@@ -52,7 +52,7 @@ public class HomeController extends BaseController {
     });
 
     List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(user.getUserId(), currentPage);
-    model.addAttribute("username", user.getUserName());
+//    model.addAttribute("username", user.getUserName());
     model.addAttribute("blogs", blogList);
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     return App.TEMPLATE_HOME;

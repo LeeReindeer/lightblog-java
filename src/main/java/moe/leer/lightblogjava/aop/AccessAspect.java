@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,7 @@ public class AccessAspect {
     //check login
     HttpServletRequest request = null;
     HttpServletResponse response = null;
+    Model model = null;
     if (joinPoint.getArgs()[0] instanceof HttpServletRequest)
       request = (HttpServletRequest) joinPoint.getArgs()[0];
     if ((joinPoint.getArgs()[1] instanceof HttpServletResponse))
@@ -46,10 +48,24 @@ public class AccessAspect {
       return CtrlUtil.redirectTo("/login");
     }
 
+    if (request.getMethod().toLowerCase().equals("get")) {
+      if ((joinPoint.getArgs()[2] instanceof Model))
+        model = (Model) joinPoint.getArgs()[2];
+      if (model == null) {
+        logger.warn("arg model not find");
+        CookieUtil.clearRoot(response, CtrlUtil.COOKIES);
+        return CtrlUtil.redirectTo("/login");
+      }
+    }
+
     logger.info("checking login");
     boolean isLogin = authService.isLogin(request);
     if (isLogin) {
       try {
+        // add current user for GET request
+        if (request.getMethod().toLowerCase().equals("get") && model != null) {
+          model.addAttribute("user", authService.getCurrentUser(request));
+        }
         return (String) joinPoint.proceed(joinPoint.getArgs());
       } catch (Throwable throwable) {
         throwable.printStackTrace();
