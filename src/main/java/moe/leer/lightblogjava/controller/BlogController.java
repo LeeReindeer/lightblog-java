@@ -4,7 +4,6 @@ import moe.leer.lightblogjava.App;
 import moe.leer.lightblogjava.base.BaseController;
 import moe.leer.lightblogjava.dao.BlogDaoWrapper;
 import moe.leer.lightblogjava.dao.CommentDao;
-import moe.leer.lightblogjava.model.Blog;
 import moe.leer.lightblogjava.model.Comment;
 import moe.leer.lightblogjava.model.LightBlog;
 import moe.leer.lightblogjava.model.User;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,7 +90,8 @@ public class BlogController extends BaseController {
     if ($.StringNullOrEmpty(content) || prevBlog.blog.blogContent.equals(content)) return CtrlUtil.redirectTo(redirect);
     logger.warn("update blog");
     try {
-      blogDao.updateBlog(blogId, content, new Date());
+      // do not change blog create time
+      blogDao.updateBlog(blogId, content, prevBlog.blog.blogTime);
     } catch (Exception e) {
       logger.error("occur unsupported string");
       return CtrlUtil.redirectTo(redirect);
