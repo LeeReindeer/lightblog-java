@@ -9,6 +9,7 @@ import moe.leer.lightblogjava.model.LightBlog;
 import moe.leer.lightblogjava.model.User;
 import moe.leer.lightblogjava.util.$;
 import moe.leer.lightblogjava.util.CtrlUtil;
+import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
+import java.util.Scanner;
+import java.util.function.Supplier;
 
 /**
  * @author leer
@@ -40,13 +45,64 @@ public class BlogController extends BaseController {
 
     LightBlog lightBlog = blogDao.getBlogDetail(blogId);
     List<Comment> comments = commentDao.getAllByBlogId(blogId);
-
+    if (lightBlog.tagName != null && lightBlog.tagName.toLowerCase().equals("java")) {
+      String compileResult = getCompileResult(lightBlog.blog.blogContent);
+      logger.warn("compile result: {}", compileResult);
+      model.addAttribute("compile", compileResult);
+    }
 //    model.addAttribute("user", user);
 //    model.addAttribute("username", user.getUserName());
     model.addAttribute("blog", lightBlog);
     model.addAttribute("comments", comments);
     model.addAttribute("redirect", request.getRequestURL().toString());
     return App.TEMPLATE_DETAIL;
+  }
+
+  private String getCompileResult(String code) {
+    Supplier<String> supplier = null;
+    long id = System.currentTimeMillis();
+    Scanner scanner = new Scanner(code);
+    StringBuilder sb = new StringBuilder();
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+      if (line.matches(" *(printf|print|println)\\(.*\\);?")) {
+        line = "System.out." + line;
+      }
+      if (!line.endsWith("{") && !line.endsWith("}")) {
+        line += ";";
+      }
+      sb.append(line).append("\n");
+    }
+    logger.warn("compiling: {}", sb.toString());
+    try {
+      supplier = Reflect.compile(
+          "moe.leer.lightblogjava.CompileTest" + id,
+          "package moe.leer.lightblogjava;\n" +
+              "import java.util.*;\n" +
+              "import java.io.*;\n" +
+              "class CompileTest" + id + "\n" +
+              "implements java.util.function.Supplier<String> {\n" +
+              "  public String get() {\n" +
+              "     PrintStream stdout = System.out;\n" +
+              "     ByteArrayOutputStream baos = new ByteArrayOutputStream();\n" +
+              "     System.setOut(new PrintStream(baos));\n" +
+              sb.toString() +
+              "     System.setOut(stdout);\n" +
+              "     return baos.toString();\n" +
+              "  }\n" +
+              "}\n"
+      ).create().get();
+    } catch (Exception e) {
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append(e.getMessage()).append("\n");
+//      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//      PrintStream printStream = new PrintStream(baos);
+//      e.printStackTrace(printStream);
+//      stringBuilder.append(baos.toString());
+//      printStream.close();
+      return stringBuilder.toString();
+    }
+    return supplier.get();
   }
 
   @GetMapping("/delete/{id}")

@@ -44,7 +44,10 @@
                                     <a class="badge-pill badge-primary text-white" th:text="'#' + ${blog.tagName}"
                                        th:if="${blog.tagName} ne null"
                                        th:href="@{'/tag/' + ${blog.blog.getBlogTagId()}}"></a>
-                                    <span th:text="${blog.blogPreview}" class="text-left"></span>
+                                    <span th:text="${blog.blogPreview}" class="text-left" th:unless="${#strings.equals(blog.tagName, 'Java')}"></span>
+                                    <pre th:if="${#strings.equals(blog.tagName, 'Java')}">
+                                        <code th:text="${blog.blogPreview}" class=""></code>
+                                    </pre>
                                 </div>
                                 <div class="float-right ml-2 mr-2">
                                 <span>
@@ -63,6 +66,9 @@
                                     <a href="#">
                                         <i class="fa fa-comments"></i>
                                         <span th:text="'&nbsp;' + ${blog.blog.blogComment}"></span>
+                                    </a> |
+                                    <a href="#" th:if="${#strings.equals(blog.tagName, 'Java')}">
+                                        <i class="fa fa-coffee"></i>
                                     </a>
                                 </span>
                                 </div>
