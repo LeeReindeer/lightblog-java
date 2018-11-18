@@ -13,21 +13,21 @@
             <!--user detail-->
             <div class="align-self-center col-lg-12" style="margin-top: 30px">
                 <center>
-                    <img th:src="${user.userAvatar}" class="user-avatar"
+                    <img th:src="${thatUser.userAvatar}" class="user-avatar"
                          style="width: 128px;height: 128px; border-radius: 50%"/>
                     <br>
-                    <h4><span class="badge badge-primary" th:text="${user.userName}"></span></h4>
-                    <p class="text-primary" th:text="'签名： ' + ${user.userBio}">
+                    <h4><span class="badge badge-primary" th:text="${thatUser.userName}"></span></h4>
+                    <p class="text-primary" th:text="'签名： ' + ${thatUser.userBio}">
                     </p>
                     <button type="button" class="btn btn-primary">
-                        关注 <span class="badge badge-light" th:text="${user.userFollowing}">UserFollowing</span>
+                        关注 <span class="badge badge-light" th:text="${thatUser.userFollowing}">UserFollowing</span>
                     </button>
                     <button type="button" class="btn btn-primary">
-                        粉丝 <span class="badge badge-light" th:text="${user.userFollowers}">UserFollowers</span>
+                        粉丝 <span class="badge badge-light" th:text="${thatUser.userFollowers}">UserFollowers</span>
                     </button>
-                    <div th:if="${user.userId ne loginUserId}">
-                        <a href="/user/UserName/unfollow" th:href="@{'/user/' + ${user.userName} + '/unfollow'}" th:if="${followed}" class="btn btn-secondary">取消关注</a>
-                        <a href="/user/UserName/follow" th:href="@{'/user/' + ${user.userName} + '/follow'}"  th:unless="${followed}"
+                    <div th:if="${thatUser.userId ne loginUserId}">
+                        <a href="/user/UserName/unfollow" th:href="@{'/user/' + ${thatUser.userName} + '/unfollow'}" th:if="${followed}" class="btn btn-secondary">取消关注</a>
+                        <a href="/user/UserName/follow" th:href="@{'/user/' + ${thatUser.userName} + '/follow'}"  th:unless="${followed}"
                            class="btn btn-info">关注ta</a>
                     </div>
                 </center>

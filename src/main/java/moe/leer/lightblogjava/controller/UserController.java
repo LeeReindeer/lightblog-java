@@ -30,6 +30,8 @@ import java.util.Date;
 @Controller
 public class UserController extends BaseController {
 
+  public static final Long OFFICIAL_ACCOUNT_ID = 13L;
+
   @Autowired
   private UserDaoWrapper userDao;
 
@@ -62,6 +64,9 @@ public class UserController extends BaseController {
     User user = new User(username, User.DEFAULT_AVATAR, CipherUtil.getPasswordHash(password), new Date());
     userDao.saveUser(user);
 
+    // follow official account
+    userDao.followUser(user.getUserId(), OFFICIAL_ACCOUNT_ID);
+
     CtrlUtil.flashWaring(flash, "注册成功，可以登录了");
     return CtrlUtil.redirectTo("/login");
   }
@@ -80,7 +85,7 @@ public class UserController extends BaseController {
   @PostMapping("/login")
   public String exposedPostLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
                                  String username, String password /*boolean rememberMe*/) {
-    if ($.StringNullOrEmpty(password)|| $.StringNullOrEmpty(username)) {
+    if ($.StringNullOrEmpty(password) || $.StringNullOrEmpty(username)) {
       return CtrlUtil.redirectTo("/login");
     }
     logger.info("username: {}", username);
@@ -112,7 +117,7 @@ public class UserController extends BaseController {
   @GetMapping("/user/{username}")
   public String userProfile(HttpServletRequest request, HttpServletResponse response,
                             Model model, @PathVariable("username") String username, RedirectAttributes flash) {
-    User thisUser = getCurrentUser(request);
+    User loginUser = getCurrentUser(request);
     User thatUser = userDao.getUserByName(username);
     if (thatUser == null) {
       logger.error("user not exits");
@@ -121,17 +126,17 @@ public class UserController extends BaseController {
     }
 
     thatUser = userDao.getUserProfile(thatUser.getUserId());
-
-    model.addAttribute("loginUserId", thisUser.getUserId());
+    model.addAttribute("thatUser", thatUser);
+    model.addAttribute("loginUserId", loginUser.getUserId());
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     model.addAttribute("blogs", thatUser.myBlogs);
-    model.addAttribute("followed", userDao.isUserFollowed(thisUser.getUserId(), thatUser.getUserId()));
+    model.addAttribute("followed", userDao.isUserFollowed(loginUser.getUserId(), thatUser.getUserId()));
     return App.TEMPLATE_PROFILE;
   }
 
   @GetMapping("/user/{username}/follow")
   public String followUser(HttpServletRequest request, HttpServletResponse response,
-                            Model model, @PathVariable("username") String username, RedirectAttributes flash)
+                           Model model, @PathVariable("username") String username, RedirectAttributes flash)
       throws UnsupportedEncodingException {
     User thatUser = userDao.getUserByName(username);
     if (thatUser == null) {
@@ -145,7 +150,7 @@ public class UserController extends BaseController {
 
   @GetMapping("/user/{username}/unfollow")
   public String unfollowUser(HttpServletRequest request, HttpServletResponse response,
-                           Model model, @PathVariable("username") String username, RedirectAttributes flash)
+                             Model model, @PathVariable("username") String username, RedirectAttributes flash)
       throws UnsupportedEncodingException {
     User thatUser = userDao.getUserByName(username);
     if (thatUser == null) {
