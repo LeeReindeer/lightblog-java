@@ -61,7 +61,7 @@ public class UserController extends BaseController {
     }
 
     // save to db
-    User user = new User(username, User.DEFAULT_AVATAR, CipherUtil.getPasswordHash(password), new Date());
+    User user = new User(username, String.format(User.DEFAULT_AVATAR, username), CipherUtil.getPasswordHash(password), new Date());
     userDao.saveUser(user);
 
     // follow official account

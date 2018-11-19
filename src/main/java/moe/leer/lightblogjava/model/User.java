@@ -20,7 +20,7 @@ public class User {
   // for load profile page
   public List<LightBlog> myBlogs;
 
-  public static final String DEFAULT_AVATAR= "https://avatars2.githubusercontent.com/u/24387694?s=100&v=4";
+  public static final String DEFAULT_AVATAR= "https://www.tinygraphs.com/squares/%s?theme=frogideas";
 
   public User() {
   }
