@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Supplier;
@@ -65,6 +63,15 @@ public class BlogController extends BaseController {
     StringBuilder sb = new StringBuilder();
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
+      // deny system ops
+      if (line.contains("System.")) {
+        return "Permission denied at \"" + line + "\"";
+      }
+      // deny reflection
+      if (line.contains("Class") || line.contains("Method") ||
+          line.matches(".*\\.invoke(.*)")) {
+        return "Don not do reflect at \"" + line + "\"";
+      }
       if (line.matches(" *(printf|print|println)\\(.*\\);?")) {
         line = "System.out." + line;
       }
