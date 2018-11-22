@@ -12,7 +12,6 @@ import moe.leer.lightblogjava.service.PagingService;
 import moe.leer.lightblogjava.util.$;
 import moe.leer.lightblogjava.util.CtrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +64,17 @@ public class HomeController extends BaseController {
       return CtrlUtil.redirectTo("/");
     }
     User user = getCurrentUser(request);
-    LightBlog tmpBlog = $.getBlogTag(content);
+    LightBlog tmpBlog = null;
+
+    try {
+      tmpBlog = $.getBlogTag(content);
+    } catch ($.Tag2LongException e) {
+      CtrlUtil.flashError(flash, "你的标签超过25个字符了哦");
+      return CtrlUtil.redirectTo("/");
+    }
+
+    logger.info("tag: {}", tmpBlog.tagName);
+    logger.info("tag size: {}", tmpBlog.tagName.length());
     Blog blog = new Blog(user.getUserId(), tmpBlog.blog.blogContent, new Date());
     if ($.StringNotNullAndEmpty(tmpBlog.tagName)) {
       // save tag, if exist return exist id else return new id

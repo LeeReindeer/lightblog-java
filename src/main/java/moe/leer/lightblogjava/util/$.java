@@ -27,27 +27,36 @@ public class $ {
     return s != null && !s.isEmpty();
   }
 
-  public static LightBlog getBlogTag(String content) {
+  public static class Tag2LongException extends Exception {
+    public Tag2LongException() {
+      super();
+    }
+  }
+
+  public static LightBlog getBlogTag(String content) throws Tag2LongException {
     LightBlog lightBlog = new LightBlog();
-    int firstSpace = 0;
     boolean hasTag = false;
-    if (content.startsWith("#") || content.startsWith("＃")) {
+    int tagEnd = 0;
+    if (content.matches("^[#＃][^#＃]+[#＃][\\s\\S]+")) {
       char[] charArray = content.toCharArray();
       for (int i = 0; i < charArray.length; i++) {
-        if (charArray[i] == ' ') {
-          firstSpace = i;
-          break;
+        if (charArray[i] == '#' || charArray[i] == '＃') {
+          if (i != 0) {
+            tagEnd = i;
+            break;
+          }
         }
       }
-      if (firstSpace > 1 && firstSpace <= 25) {
-        lightBlog.tagName = content.substring(1, firstSpace);
+      String tag = content.substring(1, tagEnd);
+      if (tagEnd > 1 && tagEnd <= 25) {
+        lightBlog.tagName = tag;
         hasTag = true;
       } else {
-        hasTag = false;
+        throw new Tag2LongException();
       }
     }
     lightBlog.blog = new Blog();
-    lightBlog.blog.blogContent = content.substring(hasTag ? firstSpace + 1 : firstSpace);
+    lightBlog.blog.blogContent = content.substring(hasTag ? tagEnd + 1 : 0);
     return lightBlog;
   }
 
