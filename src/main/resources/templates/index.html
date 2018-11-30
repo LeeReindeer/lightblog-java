@@ -52,8 +52,8 @@
                                 <div class="float-right ml-2 mr-2">
                                 <span>
                                     <!--just for GMT+8 -->
-                                    <a href="#" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
-                                    <a href="/blog/{{.BlogId}}" th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
+                                    <a th:href="@{'/blog/' + ${blog.id}}" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
+                                    <a th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
                                     <span>
                                     <a href="#" th:href="@{'/blog/like/' + ${blog.id}(redirect=${redirect})}">
                                         <i class="fa fa-thumbs-up"></i>
