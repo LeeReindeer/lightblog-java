@@ -46,26 +46,32 @@ public class UserController extends BaseController {
   public String exposedPostRegister(HttpServletRequest request, HttpServletResponse response,
                                     String username, String password, String passwordAgain, RedirectAttributes flash) {
     // check params
-    if ($.StringNotNullAndEmpty(username)) {
-      User exitUser = userDao.getUserByName(username);
-      if (exitUser != null) {
-        CtrlUtil.flashWaring(flash, "用户名已存在");
+    try {
+      if ($.StringNotNullAndEmpty(username)) {
+        User existUser = userDao.getUserByName(username);
+        if (existUser != null) {
+          CtrlUtil.flashWaring(flash, "用户名已存在");
+          return CtrlUtil.redirectTo("/register");
+        }
+      } else {
         return CtrlUtil.redirectTo("/register");
       }
-    } else {
+      if (!password.equals(passwordAgain)) {
+        CtrlUtil.flashWaring(flash, "两次输入的密码不同");
+        return CtrlUtil.redirectTo("/register");
+      }
+
+      // save to db
+      User user = new User(username, String.format(User.DEFAULT_AVATAR, username), CipherUtil.getPasswordHash(password), new Date());
+      userDao.saveUser(user);
+      // follow official account
+      userDao.followUser(user.getUserId(), OFFICIAL_ACCOUNT_ID);
+
+    } catch (Exception e) {
+      logger.error("occur unsupported string");
+      CtrlUtil.flashError(flash, "用户名包含非法字符");
       return CtrlUtil.redirectTo("/register");
     }
-    if (!password.equals(passwordAgain)) {
-      CtrlUtil.flashWaring(flash, "两次输入的密码不同");
-      return CtrlUtil.redirectTo("/register");
-    }
-
-    // save to db
-    User user = new User(username, String.format(User.DEFAULT_AVATAR, username), CipherUtil.getPasswordHash(password), new Date());
-    userDao.saveUser(user);
-
-    // follow official account
-    userDao.followUser(user.getUserId(), OFFICIAL_ACCOUNT_ID);
 
     CtrlUtil.flashWaring(flash, "注册成功，可以登录了");
     return CtrlUtil.redirectTo("/login");
@@ -90,7 +96,16 @@ public class UserController extends BaseController {
     }
     logger.info("username: {}", username);
     logger.info("password: {}", password);
-    User user = userDao.getUserByName(username);
+
+    User user = null;
+    try {
+      user = userDao.getUserByName(username);
+    } catch (Exception e) {
+      logger.error("occur unsupported string");
+      CtrlUtil.flashError(flash, "用户名包含非法字符");
+      return CtrlUtil.redirectTo("/login");
+    }
+
     if (user == null) {
       CtrlUtil.flashError(flash, "用户不存在");
       return CtrlUtil.redirectTo("/login");

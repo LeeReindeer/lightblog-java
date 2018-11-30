@@ -69,28 +69,28 @@ public class HomeController extends BaseController {
     try {
       tmpBlog = $.getBlogTag(content);
     } catch ($.Tag2LongException e) {
-      CtrlUtil.flashError(flash, "你的标签超过25个字符了哦");
+      CtrlUtil.flashError(flash, "你的标签超过25个字符了");
       return CtrlUtil.redirectTo("/");
     }
 
-    logger.info("tag: {}", tmpBlog.tagName);
-    logger.info("tag size: {}", tmpBlog.tagName.length());
     Blog blog = new Blog(user.getUserId(), tmpBlog.blog.blogContent, new Date());
-    if ($.StringNotNullAndEmpty(tmpBlog.tagName)) {
-      // save tag, if exist return exist id else return new id
-      Tag existTag = tagDao.getTagByName(tmpBlog.tagName);
-      Tag newTag = null;
-      if (existTag == null) {
-        tagDao.saveTag(newTag = new Tag(tmpBlog.tagName, new Date()));
-        blog.setBlogTagId(newTag.getTagId());
-        logger.info("save new tag {}", newTag);
-      } else {
-        blog.setBlogTagId(existTag.getTagId());
-        logger.info("use exist tag {}", existTag);
-      }
-    }
     // todo support emoji
     try {
+      if ($.StringNotNullAndEmpty(tmpBlog.tagName)) {
+        logger.info("tag: {}", tmpBlog.tagName);
+        logger.info("tag size: {}", tmpBlog.tagName.length());
+        // save tag, if exist return exist id else return new id
+        Tag existTag = tagDao.getTagByName(tmpBlog.tagName);
+        Tag newTag = null;
+        if (existTag == null) {
+          tagDao.saveTag(newTag = new Tag(tmpBlog.tagName, new Date()));
+          blog.setBlogTagId(newTag.getTagId());
+          logger.info("save new tag {}", newTag);
+        } else {
+          blog.setBlogTagId(existTag.getTagId());
+          logger.info("use exist tag {}", existTag);
+        }
+      }
       blogDao.saveBlog(blog);
     } catch (Exception e) {
       logger.error("occur unsupported string");
