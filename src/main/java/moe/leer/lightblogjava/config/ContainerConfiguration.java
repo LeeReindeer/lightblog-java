@@ -47,7 +47,8 @@ public class ContainerConfiguration {
 
   /**
    * Redirect http(80) to https(443)
-   *
+   * For localhost test: change 80 -> 8080, 433 -> 8433,
+   * and change server.port = 8433 in application.properties
    * @return the connector
    */
   private Connector redirectHttpConnector() {
