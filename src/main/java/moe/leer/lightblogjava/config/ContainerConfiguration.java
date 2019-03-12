@@ -4,6 +4,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ContainerConfiguration {
+
+  @Value("${moe.leer.lightblog.http-port}")
+  private int httpPort;
+
+  @Value("${moe.leer.lightblog.https-port}")
+  private int httpsPort;
+
   @Bean
   public ServletWebServerFactory servletContainer() {
     TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -55,9 +63,9 @@ public class ContainerConfiguration {
     Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
     connector.setScheme("http");
     // open 80 and 443 ports in server, run in root
-    connector.setPort(80);
+    connector.setPort(httpPort);
     connector.setSecure(false);
-    connector.setRedirectPort(443);
+    connector.setRedirectPort(httpsPort);
 
     return connector;
   }
