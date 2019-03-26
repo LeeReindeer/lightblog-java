@@ -68,7 +68,7 @@ public class AuthenticationService {
   }
 
   /**
-   * Check JWT token is valid otr not
+   * Check JWT token is valid or not
    *
    * @param request HttpServletRequest
    * @return is valid token
