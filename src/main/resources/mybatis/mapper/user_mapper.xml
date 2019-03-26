@@ -33,7 +33,7 @@
         </collection>
     </resultMap>
 
-    <insert id="saveUser" parameterType="User">
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user (user_name,
                           user_avatar,
                           user_password,
