@@ -14,9 +14,18 @@ public class UtilTest {
 
   @Test
   public void testTagContent() {
-    LightBlog lightBlog = $.getBlogTag("Test tag??? ");
+    LightBlog lightBlog = null;
+    try {
+      lightBlog = $.getBlogTag("#Java#\n" +
+          "println(\"Hello wwww\")");
+    } catch ($.Tag2LongException e) {
+      e.printStackTrace();
+      System.out.println("tag too long");
+      return;
+    }
     System.out.println("content: " + lightBlog.blog.blogContent);
     System.out.println("tag: " + lightBlog.tagName);
+    System.out.println("tag length: " + lightBlog.tagName.length());
   }
 
   @Test

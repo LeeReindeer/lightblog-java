@@ -57,4 +57,14 @@ public class BlogDaoTests {
     blogDao.updateBlog(36L, update, new Date());
     assertEquals(update, blogDao.getBlogById(36L).blog.blogContent);
   }
+
+  @Test
+  public void searchTest() {
+    List<LightBlog> lightBlogs = blogDao.searchAll("不值得");
+    for (LightBlog lightBlog : lightBlogs) {
+      System.out.println(lightBlog.blogPreview);
+      System.out.println(lightBlog.blog.blogTime.toString());
+      System.out.println(lightBlog.getTimeString());
+    }
+  }
 }
