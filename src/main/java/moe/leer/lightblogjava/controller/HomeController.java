@@ -39,10 +39,10 @@ public class HomeController extends BaseController {
   @Autowired
   private TagDao tagDao;
 
-  @GetMapping({"/", "/index"})
+  @GetMapping("/")
   public String timeline(HttpServletRequest request, HttpServletResponse response,
                          Model model) {
-    User user = getCurrentUser(request);
+    User user = getCurrentUser();
     int currentPage = pagingService.paging(request, model, new PagingService.Callback() {
       @Override
       public long callback(Object[] objects) {
@@ -51,19 +51,19 @@ public class HomeController extends BaseController {
     });
 
     List<LightBlog> blogList = blogDao.getTimelineByUIDWithPaging(user.getUserId(), currentPage);
-//    model.addAttribute("username", user.getUserName());
+    model.addAttribute("user", user);
     model.addAttribute("blogs", blogList);
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     return App.TEMPLATE_HOME;
   }
 
-  @PostMapping({"/", "/index"})
+  @PostMapping("/")
   public String newLight(HttpServletRequest request, HttpServletResponse response,
                          Model model, String content, RedirectAttributes flash) {
     if ($.StringNullOrEmpty(content)) {
       return CtrlUtil.redirectTo("/");
     }
-    User user = getCurrentUser(request);
+    User user = getCurrentUser();
     LightBlog tmpBlog = null;
 
     try {

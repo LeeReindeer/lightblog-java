@@ -80,59 +80,59 @@ public class UserController extends BaseController {
   @GetMapping("/login")
   public String exposedGetLogin(HttpServletRequest request, HttpServletResponse response,
                                 Model model) {
-    if (isLogin(request)) {
-      return CtrlUtil.redirectTo("/");
-    }
+//    if (isLogin(request)) {
+//      return CtrlUtil.redirectTo("/");
+//    }
     model.addAttribute("register", false);
     model.addAttribute("login", true);
     return App.TEMPLATE_LOGIN;
   }
 
-  @PostMapping("/login")
-  public String exposedPostLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
-                                 String username, String password /*boolean rememberMe*/) {
-    if ($.StringNullOrEmpty(password) || $.StringNullOrEmpty(username)) {
-      return CtrlUtil.redirectTo("/login");
-    }
-    logger.info("username: {}", username);
-    logger.info("password: {}", password);
-
-    User user = null;
-    try {
-      user = userDao.getUserByName(username);
-    } catch (Exception e) {
-      logger.error("occur unsupported string");
-      CtrlUtil.flashError(flash, "用户名包含非法字符");
-      return CtrlUtil.redirectTo("/login");
-    }
-
-    if (user == null) {
-      CtrlUtil.flashError(flash, "用户不存在");
-      return CtrlUtil.redirectTo("/login");
-    } else if (!authService.cmpPasswordHash(password, user)) {
-      CtrlUtil.flashError(flash, "密码错误");
-      logger.info("password error");
-      return CtrlUtil.redirectTo("/login");
-    } else {
-      String token = authService.getToken(user);
-      // put token in cookie
-      CookieUtil.add(response, CtrlUtil.COOKIE_TOKEN, token);
-      logger.info("login succeed");
-      return CtrlUtil.redirectTo("/");
-    }
-  }
-
-  @GetMapping("logout")
-  public String exposedLogout(HttpServletRequest request, HttpServletResponse response) {
-    CookieUtil.clearRoot(response, CtrlUtil.COOKIES);
-    logger.info("logout succeed");
-    return CtrlUtil.redirectTo("/login");
-  }
+//  @PostMapping("/login")
+//  public String exposedPostLogin(HttpServletRequest request, HttpServletResponse response, RedirectAttributes flash,
+//                                 String username, String password /*boolean rememberMe*/) {
+//    if ($.StringNullOrEmpty(password) || $.StringNullOrEmpty(username)) {
+//      return CtrlUtil.redirectTo("/login");
+//    }
+//    logger.info("username: {}", username);
+//    logger.info("password: {}", password);
+//
+//    User user = null;
+//    try {
+//      user = userDao.getUserByName(username);
+//    } catch (Exception e) {
+//      logger.error("occur unsupported string");
+//      CtrlUtil.flashError(flash, "用户名包含非法字符");
+//      return CtrlUtil.redirectTo("/login");
+//    }
+//
+//    if (user == null) {
+//      CtrlUtil.flashError(flash, "用户不存在");
+//      return CtrlUtil.redirectTo("/login");
+//    } else if (!authService.cmpPasswordHash(password, user)) {
+//      CtrlUtil.flashError(flash, "密码错误");
+//      logger.info("password error");
+//      return CtrlUtil.redirectTo("/login");
+//    } else {
+//      String token = authService.getToken(user);
+//      // put token in cookie
+//      CookieUtil.add(response, CtrlUtil.COOKIE_TOKEN, token);
+//      logger.info("login succeed");
+//      return CtrlUtil.redirectTo("/");
+//    }
+//  }
+//
+//  @GetMapping("logout")
+//  public String exposedLogout(HttpServletRequest request, HttpServletResponse response) {
+//    CookieUtil.clearRoot(response, CtrlUtil.COOKIES);
+//    logger.info("logout succeed");
+//    return CtrlUtil.redirectTo("/login");
+//  }
 
   @GetMapping("/user/{username}")
   public String userProfile(HttpServletRequest request, HttpServletResponse response,
                             Model model, @PathVariable("username") String username, RedirectAttributes flash) {
-    User loginUser = getCurrentUser(request);
+    User loginUser = getCurrentUser();
     User thatUser = userDao.getUserByName(username);
     if (thatUser == null) {
       logger.error("user not exits");
@@ -141,6 +141,7 @@ public class UserController extends BaseController {
     }
 
     thatUser = userDao.getUserProfile(thatUser.getUserId());
+    model.addAttribute("user", loginUser);
     model.addAttribute("thatUser", thatUser);
     model.addAttribute("loginUserId", loginUser.getUserId());
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
@@ -159,7 +160,7 @@ public class UserController extends BaseController {
       CtrlUtil.flashError(flash, "用户不存在");
       return CtrlUtil.redirectTo("/error");
     }
-    userDao.followUser(getCurrentUser(request).getUserId(), thatUser.getUserId());
+    userDao.followUser(getCurrentUser().getUserId(), thatUser.getUserId());
     return CtrlUtil.redirectTo("/user/" + URLEncoder.encode(username, "UTF-8"));
   }
 
@@ -173,7 +174,7 @@ public class UserController extends BaseController {
       CtrlUtil.flashError(flash, "用户不存在");
       return CtrlUtil.redirectTo("/error");
     }
-    userDao.unFollowUser(getCurrentUser(request).getUserId(), thatUser.getUserId());
+    userDao.unFollowUser(getCurrentUser().getUserId(), thatUser.getUserId());
     return CtrlUtil.redirectTo("/user/" + URLEncoder.encode(username, "UTF-8"));
   }
 }

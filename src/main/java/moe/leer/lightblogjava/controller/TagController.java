@@ -5,6 +5,7 @@ import moe.leer.lightblogjava.base.BaseController;
 import moe.leer.lightblogjava.dao.BlogDaoWrapper;
 import moe.leer.lightblogjava.dao.TagDao;
 import moe.leer.lightblogjava.model.Tag;
+import moe.leer.lightblogjava.model.User;
 import moe.leer.lightblogjava.util.CtrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,11 +33,13 @@ public class TagController extends BaseController {
   @GetMapping("/tag/{tagId}")
   public String taggedBlog(HttpServletRequest request, HttpServletResponse response,
                            Model model, @PathVariable("tagId") Long tagId, RedirectAttributes flash) {
+    User user = getCurrentUser();
     Tag tag = tagDao.getTagById(tagId);
     if (tag == null) {
       CtrlUtil.flashError(flash, "标签不存在");
       return CtrlUtil.redirectTo("/");
     }
+    model.addAttribute("user", user);
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));
     model.addAttribute("tag", tag);
     model.addAttribute("blogs", blogDao.getBlogsWithTag(tagId));

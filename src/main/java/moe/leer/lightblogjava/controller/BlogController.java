@@ -38,7 +38,6 @@ public class BlogController extends BaseController {
   @GetMapping("/{id}")
   public String blogDetail(HttpServletRequest request, HttpServletResponse response,
                            Model model, @PathVariable("id") Long blogId) {
-    User user = getCurrentUser(request);
     if (blogId == null || blogId == 0) return CtrlUtil.redirectTo("/");
 
     LightBlog lightBlog = blogDao.getBlogDetail(blogId);
@@ -48,8 +47,8 @@ public class BlogController extends BaseController {
       logger.warn("compile result: {}", compileResult);
       model.addAttribute("compile", compileResult);
     }
-//    model.addAttribute("user", user);
-//    model.addAttribute("username", user.getUserName());
+    User user = getCurrentUser();
+    model.addAttribute("user", user);
     model.addAttribute("blog", lightBlog);
     model.addAttribute("comments", comments);
     model.addAttribute("redirect", request.getRequestURL().toString());
@@ -123,7 +122,7 @@ public class BlogController extends BaseController {
   public String likeBlog(HttpServletRequest request, HttpServletResponse response,
                          Model model, @PathVariable("id") Long blogId,
                          @RequestParam("redirect") String redirectURL) {
-    Long userId = getCurrentUser(request).getUserId();
+    Long userId = getCurrentUser().getUserId();
     blogDao.toggleLikeBlog(blogId, userId);
     return CtrlUtil.redirectTo(redirectURL);
   }
@@ -132,7 +131,7 @@ public class BlogController extends BaseController {
   public String dislikeBlog(HttpServletRequest request, HttpServletResponse response,
                             Model model, @PathVariable("id") Long blogId,
                             @RequestParam("redirect") String redirectURL) {
-    Long userId = getCurrentUser(request).getUserId();
+    Long userId = getCurrentUser().getUserId();
     blogDao.toggleDislikeBlog(blogId, userId);
     return CtrlUtil.redirectTo(redirectURL);
   }
@@ -141,6 +140,8 @@ public class BlogController extends BaseController {
   public String getEditBlog(HttpServletRequest request, HttpServletResponse response,
                             Model model, @PathVariable("id") Long blogId) {
     logger.warn("edit blog");
+    User user = getCurrentUser();
+    model.addAttribute("user", user);
     model.addAttribute("blog", blogDao.getBlogById(blogId));
     return App.TEMPLATE_EDITBLOG;
   }

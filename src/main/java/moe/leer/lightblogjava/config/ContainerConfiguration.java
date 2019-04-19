@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  *  firewall-cmd --add-port=80/tcp
  *  firewall-cmd --add-port=433/tcp
  *
- *  for redirect 80 to 8080, 443 to 8433,
+ *  for redirect 80 to 8080, 443 to 8443,
  *  not used in this app
  *  firewall-cmd --add-port=8080/tcp
  *  firewall-cmd --add-port=8433/tcp

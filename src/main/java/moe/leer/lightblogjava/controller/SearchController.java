@@ -42,6 +42,8 @@ public class SearchController extends BaseController {
                        Model model, @RequestParam("q") String query) {
     List<User> users = userDao.searchAll(query);
     List<LightBlog> blogs = blogDao.searchAll(query);
+    User user = getCurrentUser();
+    model.addAttribute("user", user);
     model.addAttribute("users", users);
     model.addAttribute("blogs", blogs);
     model.addAttribute("redirect", CtrlUtil.getCurrentURL(request));

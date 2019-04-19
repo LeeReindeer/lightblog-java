@@ -14,6 +14,7 @@ import static moe.leer.lightblogjava.util.CtrlUtil.COOKIE_USER;
  * Created at 4/27/18 8:08 PM
  */
 
+@Deprecated
 public class CookieUtil {
 
   public static final int MAX_AGE = 3600 * 24 * 365 * 10;
