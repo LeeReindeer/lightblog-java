@@ -1,6 +1,8 @@
 # LightBlog-Java
 
 > [golang version](https://github.com/LeeReindeer/lightblog)
+>
+> [Spring Security Version](https://github.com/LeeReindeer/lightblog-java/tree/spring-security)
 
 ## Changelog
 
