@@ -4,6 +4,7 @@
 
 ## Changelog
 
+- 1.2.5-beta: 使用 Spring Security
 - 1.2.4-beta: 支持运行时执行Java代码
 - 1.2.3-beta: 重定向 http 到 https
 - 1.2.2-beta: 更好看的界面
