@@ -55,11 +55,13 @@
                                     <a th:href="@{'/blog/' + ${blog.id}}" th:text="${blog.getTimeString()}">2018-01-07 00:00:00</a> |
                                     <a th:href="@{'/blog/' + ${blog.id}}">详情</a>|</span>
                                     <span>
-                                    <a href="#" th:href="@{'/blog/like/' + ${blog.id}(redirect=${redirect})}">
+                                    <a  th:id="'likeButton'+${blog.id}" href="#"  th:onclick="'likeBlog(\''+${blog.id}+'\')'" >
+<!--                                        th:href="@{'/blog/like/' + ${blog.id}(redirect=${redirect})}">-->
                                         <i class="fa fa-thumbs-up"></i>
                                         <span th:text="'&nbsp;' + ${blog.blog.blogLike}"></span>
                                     </a> |
-                                    <a href="#" th:href="@{'/blog/dislike/' + ${blog.id}(redirect=${redirect})}">
+                                    <a th:id="'dislikeButton'+${blog.id}"  href="#" th:onclick="'dislikeBlog(\''+${blog.id}+'\')'" >
+<!--                                        th:href="@{'/blog/dislike/' + ${blog.id}(redirect=${redirect})}">-->
                                         <i class="fa fa-thumbs-down"></i>
                                         <span th:text="'&nbsp;' + ${blog.blog.blogUnLike}"></span>
                                     </a> |
