@@ -37,11 +37,11 @@
                                     <a href="#" th:text="${blog.getTimeString()}"></a>|
                                 </span>
                                     <span>
-                                        <a th:id="'likeButton'+${blog.id}" href="#"  th:onclick="'likeBlog(\''+${blog.id}+'\')'" >
+                                        <a th:id="'likeButton'+${blog.id}" href="javascript:;" th:onclick="'likeBlog(\''+${blog.id}+'\')'" >
                                             <i class="fa fa-thumbs-up"></i>
                                             <span th:text="'&nbsp;' + ${blog.blog.blogLike}"></span>
                                         </a> |
-                                        <a th:id="'dislikeButton'+${blog.id}"  href="#" th:onclick="'dislikeBlog(\''+${blog.id}+'\')'" >
+                                        <a th:id="'dislikeButton'+${blog.id}" href="javascript:;" th:onclick="'dislikeBlog(\''+${blog.id}+'\')'" >
                                             <i class="fa fa-thumbs-down"></i>
                                             <span th:text="'&nbsp;' + ${blog.blog.blogUnLike}"></span>
                                         </a> |
