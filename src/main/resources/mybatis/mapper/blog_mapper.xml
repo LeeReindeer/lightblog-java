@@ -110,6 +110,7 @@
     </update>
 
     <update id="incLikeBlog">
+        #         todo 事务
         UPDATE blog
         SET blog_like = blog_like + 1
         WHERE blog_id = #{blogId};

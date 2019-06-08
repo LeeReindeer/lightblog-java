@@ -18,24 +18,28 @@ public abstract class BaseController {
 
   @Autowired
   protected UserDaoWrapper userDao;
-//  @Autowired
-//  protected AuthenticationService authService;
 
-  //  protected boolean isLogin(HttpServletRequest request) {
-//    return authService.isLogin(request);
-//  }
-//
   protected User getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) getAuthentication().getPrincipal();
     if (user == null) return null;
-    return userDao.getUserByName(user.getUsername());
+    // the username with this user is user id in moe.leer.lightblog.model.User
+    return userDao.getUserById(Long.valueOf(user.getUsername()));
+  }
+
+  // Get user id without SQL query
+  protected Long getCurrentUserId() {
+    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) getAuthentication().getPrincipal();
+    if (user == null) return null;
+    return Long.valueOf(user.getUsername());
   }
 
   protected String getCurrentUserName() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) getAuthentication().getPrincipal();
     return user == null ? null : user.getUsername();
+  }
+
+  private Authentication getAuthentication() {
+    return SecurityContextHolder.getContext().getAuthentication();
   }
 
 }

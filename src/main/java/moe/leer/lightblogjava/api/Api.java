@@ -23,12 +23,12 @@ public class Api extends BaseController {
 
   @GetMapping("/blog/liked/{id}")
   public boolean isLikedBlog(@PathVariable("id") Long blogId) {
-    return blogDao.isLikedBlog(blogId, getCurrentUser().getUserId());
+    return blogDao.isLikedBlog(blogId, getCurrentUserId());
   }
 
   @GetMapping("/blog/disliked/{id}")
   public boolean isDisLlkedBlog(@PathVariable("id") Long blogId) {
-    return blogDao.isDislikeBlog(blogId, getCurrentUser().getUserId());
+    return blogDao.isDislikeBlog(blogId, getCurrentUserId());
   }
 
   @GetMapping("/blog/likes/{id}")
@@ -43,14 +43,12 @@ public class Api extends BaseController {
 
   @PutMapping("/blog/like/{id}")
   public void likeBlog(@PathVariable("id") Long blogId) {
-    Long userId = getCurrentUser().getUserId();
-    blogDao.toggleLikeBlog(blogId, userId);
+    blogDao.toggleLikeBlog(blogId, getCurrentUserId());
   }
 
   @PutMapping("/blog/dislike/{id}")
   public void dislikeBlog(@PathVariable("id") Long blogId) {
-    Long userId = getCurrentUser().getUserId();
-    blogDao.toggleDislikeBlog(blogId, userId);
+    blogDao.toggleDislikeBlog(blogId, getCurrentUserId());
   }
 
   @DeleteMapping("/blog/{id}")

@@ -25,12 +25,18 @@ public class UserDetailService implements UserDetailsService {
   @Autowired
   private UserDaoWrapper userDao;
 
+  /**
+   * Input username from web form, query SQL, but return user with the user id
+   *
+   * @param username the username
+   * @throws UsernameNotFoundException
+   */
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     moe.leer.lightblogjava.model.User user = userDao.getUserByName(username);
     if (user == null) throw new UsernameNotFoundException("用户不存在");
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority(USER_ROLE));
-    return new User(user.getUserName(), user.getPassword(), authorities);
+    return new User(user.getUserId().toString(), user.getPassword(), authorities);
   }
 }
