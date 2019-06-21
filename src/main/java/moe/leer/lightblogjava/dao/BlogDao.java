@@ -62,6 +62,10 @@ public interface BlogDao {
    */
   void decLikeBlog(@Param("blogId") Long blogId, @Param("uid") Long uid);
 
+  List<Long> getLikedUsers(Long blogId);
+
+  List<Long> getDislikedUsers(Long blogId);
+
   /**
    * check whether the user like this blog in wrapper method
    *

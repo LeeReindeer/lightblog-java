@@ -3,7 +3,7 @@ package moe.leer.lightblogjava.dao;
 import moe.leer.lightblogjava.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,11 +52,14 @@ public class UserDaoWrapper implements UserDao {
     userDao.saveUser(uesr);
   }
 
+  @Transactional
   @Override
   public void followUser(Long fromId, Long toId) {
     userDao.followUser(fromId, toId);
   }
 
+  // Add Transactional annotation for multi SQL execute
+  @Transactional
   @Override
   public void unFollowUser(Long fromId, Long toId) {
     userDao.unFollowUser(fromId, toId);
@@ -66,7 +69,7 @@ public class UserDaoWrapper implements UserDao {
   @Override
   @Deprecated
   public Long isFollowed(Long fromId, Long toId) {
-    throw new NotImplementedException();
+    throw new IllegalStateException();
   }
 
   public boolean isUserFollowed(Long fromId, Long toId) {

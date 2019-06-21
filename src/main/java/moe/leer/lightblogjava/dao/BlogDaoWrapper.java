@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -132,6 +132,7 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.decLikeBlog(blogId, uid);
   }
 
+  @Transactional
   public void toggleLikeBlog(Long blogId, Long uid) {
     boolean isLiked = isLikedBlog(blogId, uid);
     if (isLiked) {
@@ -162,6 +163,7 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.decDislikeBlog(blogId, uid);
   }
 
+  @Transactional
   public void toggleDislikeBlog(Long blogId, Long uid) {
     logger.warn("cnt: {}", blogDao.isUserDislikeBlog(blogId, uid));
     boolean isDisliked = isDislikeBlog(blogId, uid);
@@ -184,16 +186,27 @@ public class BlogDaoWrapper implements BlogDao {
     blogDao.decBlogComment(blogId);
   }
 
+
+  @Override
+  public List<Long> getLikedUsers(Long blogId) {
+    return blogDao.getLikedUsers(blogId);
+  }
+
+  @Override
+  public List<Long> getDislikedUsers(Long blogId) {
+    return blogDao.getDislikedUsers(blogId);
+  }
+
   // Should not be called
   @Deprecated
   @Override
   public int isUserLikedBlog(Long blogId, Long uid) {
-    throw new NotImplementedException();
+    throw new IllegalStateException();
   }
 
   @Deprecated
   @Override
   public int isUserDislikeBlog(Long blogId, Long uid) {
-    throw new NotImplementedException();
+    throw new IllegalStateException();
   }
 }
