@@ -93,6 +93,7 @@ public class HomeController extends BaseController {
       }
       blogDao.saveBlog(blog);
     } catch (Exception e) {
+      e.printStackTrace();
       logger.error("occur unsupported string");
       CtrlUtil.flashError(flash, "未发布成功：不支持的文本类型");
       return CtrlUtil.redirectTo("/");

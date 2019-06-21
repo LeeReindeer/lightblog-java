@@ -1,5 +1,6 @@
 package moe.leer.lightblogjava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import moe.leer.lightblogjava.util.$;
 
 /**
@@ -20,6 +21,7 @@ public class LightBlog {
   public LightBlog() {
   }
 
+  @JsonIgnore
   public String getTimeString() {
     return $.formatTime(this.blog.blogTime);
   }

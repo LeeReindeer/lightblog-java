@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="moe.leer.lightblogjava.dao.TagDao">
+    <cache
+            type="moe.leer.lightblogjava.cache.RedisCache"
+            eviction="LRU"
+            flushInterval="60000"
+    />
     <resultMap id="tagMap" type="Tag">
         <id property="tagId" column="tag_id" javaType="Long" jdbcType="BIGINT"/>
         <result property="tagName" column="tag_name" javaType="String" jdbcType="VARCHAR"/>

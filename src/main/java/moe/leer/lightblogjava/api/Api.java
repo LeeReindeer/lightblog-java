@@ -27,7 +27,7 @@ public class Api extends BaseController {
   }
 
   @GetMapping("/blog/disliked/{id}")
-  public boolean isDisLlkedBlog(@PathVariable("id") Long blogId) {
+  public boolean isDisLikedBlog(@PathVariable("id") Long blogId) {
     return blogDao.isDislikeBlog(blogId, getCurrentUserId());
   }
 
@@ -41,14 +41,30 @@ public class Api extends BaseController {
     return blogDao.getBlogUnlike(blogId);
   }
 
+  /**
+   * Like or recycle your like of the blog
+   *
+   * @return the like count
+   */
   @PutMapping("/blog/like/{id}")
-  public void likeBlog(@PathVariable("id") Long blogId) {
-    blogDao.toggleLikeBlog(blogId, getCurrentUserId());
+  public int likeBlog(@PathVariable("id") Long blogId) {
+    Long userId = getCurrentUserId();
+    blogDao.toggleLikeBlog(blogId, userId);
+    Integer cnt = blogDao.getBlogLike(blogId);
+    return cnt;
   }
 
+  /**
+   * DisLike or recycle your dislike of the blog
+   *
+   * @return the dislike count
+   */
   @PutMapping("/blog/dislike/{id}")
-  public void dislikeBlog(@PathVariable("id") Long blogId) {
-    blogDao.toggleDislikeBlog(blogId, getCurrentUserId());
+  public int dislikeBlog(@PathVariable("id") Long blogId) {
+    Long userId = getCurrentUserId();
+    blogDao.toggleDislikeBlog(blogId, userId);
+    Integer cnt = blogDao.getBlogUnlike(blogId);
+    return cnt;
   }
 
   @DeleteMapping("/blog/{id}")

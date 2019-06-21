@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.6.RELEASE'
+        springBootVersion = '2.1.6.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -17,7 +17,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'moe.leer'
 version = '1.2.5-beta'
-sourceCompatibility = 1.8
+sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -33,6 +33,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-security')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1")
     implementation('org.jooq:joor-java-8:0.9.8')
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'

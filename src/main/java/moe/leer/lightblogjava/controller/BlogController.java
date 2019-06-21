@@ -118,6 +118,7 @@ public class BlogController extends BaseController {
     return CtrlUtil.redirectTo("/");
   }
 
+  @Deprecated
   @GetMapping("/like/{id}")
   public String likeBlog(HttpServletRequest request, HttpServletResponse response,
                          Model model, @PathVariable("id") Long blogId,
@@ -127,6 +128,7 @@ public class BlogController extends BaseController {
     return CtrlUtil.redirectTo(redirectURL);
   }
 
+  @Deprecated
   @GetMapping("/dislike/{id}")
   public String dislikeBlog(HttpServletRequest request, HttpServletResponse response,
                             Model model, @PathVariable("id") Long blogId,

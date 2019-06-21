@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="moe.leer.lightblogjava.dao.BlogDao">
+    <cache
+            type="moe.leer.lightblogjava.cache.RedisCache"
+            eviction="LRU"
+            flushInterval="60000"
+    />
 
     <resultMap id="blogMap" type="Blog">
         <id property="blogId" column="blog_id"/>
@@ -20,7 +25,7 @@
         <association property="blog" column="blog_id" resultMap="blogMap"/>
     </resultMap>
 
-    <select id="getTimelineByUIDWithPaging" resultMap="lightBlogMap">
+    <select id="getTimelineByUIDWithPaging" resultMap="lightBlogMap" useCache="true">
         SELECT *
         FROM blogdetail
         WHERE blog_uid IN
@@ -95,6 +100,20 @@
         SELECT *
         FROM blogdetail
         WHERE blog_content LIKE CONCAT('%', #{key}, '%');
+    </select>
+
+    <select id="getLikedUsers" resultType="java.lang.Long">
+        SELECT user_id
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND count_type = 0;
+    </select>
+
+    <select id="getDislikedUsers" resultType="java.lang.Long">
+        SELECT user_id
+        FROM blog_counter
+        WHERE blog_id = #{blogId}
+          AND count_type = 1;
     </select>
 
     <insert id="saveBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="blogId">
